@@ -3,4 +3,4 @@ This repository contains modules and routines in Python, C/C++ for digital signa
 
 
 WebSite for this project can be found in: 
-<a ref=http://loadcode.github.io/Python-DSP-ToolBox>Python DSP ToolBox</a>
+<a href="http://loadcode.github.io/Python-DSP-ToolBox" target="_blank">Python DSP ToolBox</a>
