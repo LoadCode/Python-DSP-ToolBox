@@ -1,4 +1,4 @@
-
+# -*- coding: utf-8 -*-
 
 def ones(m,n=1):
 
@@ -70,10 +70,16 @@ def linspace(xmin,xmax,n = 100):
 	return vec
 
 
+def size(mat):
+	#Esta función retorna las dimensiones de un Array que es pasado como parámetro
+	m = len(mat)
+	n = len(mat[1][:])
+	return [m,n]
+
+
 def round_vec(vec):
 	#Esta rutina aplica la función round() a cada elemento de un vector
 	N = len(vec)
 	for n in range(0,N):
 		vec[n] = round(vec[n])
 	return vec
-
