@@ -8,6 +8,7 @@ from PIL import Image
 #		  http://stackoverflow.com/questions/1109422/getting-list-of-pixel-values-from-pil
 #		  http://effbot.org/imagingbook/image.htm
 #		  http://sourcedexter.com/2013/08/27/extracting-pixel-values-of-an-image-in-python/
+#		  http://stackoverflow.com/questions/29637191/python-pil-putdata-method-not-saving-the-right-data
 
 
 #EJEMPLO PARA LA MANIPULACIÓN DE IMÁGENES
