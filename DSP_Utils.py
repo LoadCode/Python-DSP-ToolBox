@@ -16,7 +16,6 @@ def ones(m,n=1):
 
 	return mat
 
-
 def zeros(m,n=1):
 	if m != 0 or n != 0:
 		if m == 1 and n != 1:
@@ -32,10 +31,9 @@ def zeros(m,n=1):
 
 	return mat
 
-
-
 def matInit(m,n,val=1.0):
 
+	val = float(val)
 	if m != 0 or n != 0:
 		if m == 1 and n != 1:
 			mat = [val for x in range(0,n)]
@@ -50,13 +48,12 @@ def matInit(m,n,val=1.0):
 
 	return mat
 
-
 def linspace(xmin,xmax,n = 100):
 	
 	#Rutina para la generación de vectores con elementos linealmente espaciados (ver documentación)
 	
-	xmin *= 1.0  #En caso que los valores se pasen como números enteros
-	xmax *= 1.0
+	xmin = float(xmin) #En caso que los valores se pasen como números enteros
+	xmax = float(xmax)
 
 	stp = (xmax-xmin)/(n-1)
 	vec = [0 for x in range(0,n)] #Inicialización del vector que almacenará los valores
@@ -69,13 +66,11 @@ def linspace(xmin,xmax,n = 100):
 
 	return vec
 
-
 def size(mat):
 	#Esta función retorna las dimensiones de un Array que es pasado como parámetro
 	m = len(mat)
 	n = len(mat[1][:])
 	return [m,n]
-
 
 def round_vec(vec):
 	#Esta rutina aplica la función round() a cada elemento de un vector
@@ -83,3 +78,4 @@ def round_vec(vec):
 	for n in range(0,N):
 		vec[n] = round(vec[n])
 	return vec
+
