@@ -62,6 +62,41 @@ def ImageMat(Lista1D,m,n): #Image reconstruction (volver a forma matricial)
 	imagemat = [Lista1D[i * n:(i + 1) * n] for i in xrange(m)]
 	return imagemat
 
+
+def getPlane(imagen, pln = 'R'):
+	
+	#Función para obtener un plano de color determinado de una imagen RGB
+	#EJEMPLO:#imagen = imread('brick-house.png')
+	#imagen = rgb2gray(imagen)
+	#rojo = getPlane(imagen,'b')
+	#imshow(rojo)
+	
+	dataPlane = [[ (0,0,0) for h in range(m)] for x in range(n)] #Se inicializa el vector previamente
+
+	if pln == 'r' or pln == 'R':
+		plane = 0
+		for i in range(n):
+			for j in range(m):
+				dataPlane[i][j] = (imagen[i][j][plane],0,0)
+	elif pln == 'g' or pln == 'G':
+		plane = 1
+		for i in range(n):
+			for j in range(m):
+				dataPlane[i][j] = (0,imagen[i][j][plane],0)
+	elif pln == 'b' or pln == 'B':
+		plane = 2
+		for i in range(n):
+			for j in range(m):
+				dataPlane[i][j] = (0,0,imagen[i][j][plane])
+	else:
+		return []
+
+
+	
+
+	return dataPlane
+
+
 def List1D(data):
 	#EJEMPLO: 
 	#lista = [[(1,2,3),(3,2,1)],[(8,7,6),(7,5,3)],[(3,8,9),(9,4,5)]]
@@ -80,3 +115,5 @@ def List1D(data):
 			h += 1
 
 	return lista
+
+
