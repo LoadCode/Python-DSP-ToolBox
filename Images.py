@@ -68,8 +68,8 @@ def getPlane(imagen, pln = 'R'):
 	#Función para obtener un plano de color determinado de una imagen RGB
 	#EJEMPLO:#imagen = imread('brick-house.png')
 	#imagen = rgb2gray(imagen)
-	#rojo = getPlane(imagen,'b')
-	#imshow(rojo)
+	#green = getPlane(imagen,'g')
+	#imshow(green)
 	
 	dataPlane = [[ (0,0,0) for h in range(m)] for x in range(n)] #Se inicializa el vector previamente
 
