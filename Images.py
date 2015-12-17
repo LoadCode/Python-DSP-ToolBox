@@ -43,7 +43,8 @@ def rgb2gray(dataMat,formato = 'RGB'):
 	#Nuevamente se convierte a forma matricial
 	pixelsList = list(imagine.getdata())
 	width, height = imagine.size
-	matriz = ImageMat(pixelsList,height,width) 
+	matriz = ImageMat(pixelsList,height,width)
+	matriz = arrayInt2Float(matriz)
 
 	return matriz
 
@@ -69,7 +70,7 @@ def getPlane(imagen, pln = 'R'):
 	#imagen = rgb2gray(imagen)
 	#green = getPlane(imagen,'g')
 	#imshow(green)
-	
+	m,n = size(imagen)
 	dataPlane = [[ (0,0,0) for h in range(m)] for x in range(n)] #Se inicializa el vector previamente
 
 	if pln == 'r' or pln == 'R':
@@ -142,13 +143,14 @@ def imconv(imagen, kernel,pad = None):
 		return [] #debe levantar una excepción porque el kernel debe ser cuadro e impar
 
 	imaConv = padMatrix(imagen,padlen)
-	imRes   = imagen
+	imRes   = zeros(mi,ni)
+
 	for i in range(mi):
 		for j in range(ni):
 			acu = 0
 			for x in range(i,mk+i):
 				for k in range(j,nk+j):
-					acu += imaConv[x][k]*kernel[x-i][k-j] + 10
+					acu += imaConv[x][k]*kernel[x-i][k-j]
 			imRes[i][j] = acu
 
 	return imRes
@@ -168,9 +170,9 @@ def umbralizar(imagen,umbral = 100):
 	for i in range(m):
 		for j in range(n):
 			if imagen[i][j] >= umbral:
-				imagen[i][j] = 254
+				imagen[i][j] = 254.0
 			else:
-				imagen[i][j] = 0
+				imagen[i][j] = 0.0
 
 	return imagen
 
@@ -187,7 +189,7 @@ def arrayInt2Float(matrix):
 
 
 def maxMatrix(mat):
-	#Retorna el valor más grande de una matriz completa
+	#Retorna el valor máximo en una matriz
 	N = len(mat) #obtiene el número de filas
 	maxVec = [0.0 for j in range(N)]
 
@@ -197,17 +199,98 @@ def maxMatrix(mat):
 	return max(maxVec)
 
 
+def minMatrix(mat):
+	#Retorna el valor mínimo presente en una matriz
+	N = len(mat) #obtiene el número de filas
+	maxVec = [0.0 for j in range(N)]
 
-imagen = imread('sobel.png')
-imagen = rgb2gray(imagen)
-imf    = arrayInt2Float(imagen) #imagen en formato flotante
+	for i in range(N):
+		maxVec[i] = min(mat[i])
+
+	return min(maxVec)
+
+def matScalarOperation(mat,scl,op = '+'):
+
+	m,n = size(mat)
+
+	if op == '+':
+
+		for i in range(m):
+			for j in range(n):
+				mat[i][j] += scl 
+
+	elif op == '-':
+
+		for i in range(m):
+			for j in range(n):
+				mat[i][j] -= scl
+
+	elif op == '*':
+
+		for i in range(m):
+			for j in range(n):
+				mat[i][j] *= scl
+
+	elif op == '/':
+
+		for i in range(m):
+			for j in range(n):
+				mat[i][j] /= scl
+
+	else:
+		print 'error operacion no valida'
+		return []
+
+	return mat
+
+def MatrixOperations(mat1,mat2,op = '+'):
+
+	m1,n1 = size(mat1)
+	m2,n2 = size(mat2)
+	res = zeros(m1,n1)
+
+	if op == '+':
+		for i in range(m1):
+			for j in range(n1):
+				res[i][j] = mat1[i][j] + mat2[i][j]
+
+	return res
+
+
+def mapMatrix(mat,mini = 0.0,maxi = 255.0):
+
+	m,n = size(mat)
+	newMat = zeros(m,n)
+
+	#Mínimo y máximo valor presente en la matriz
+	mi = minMatrix(mat)
+	ma = maxMatrix(mat)
+	rango = ma-mi
+	newMat = matScalarOperation( matScalarOperation(mat,mi,'-'),rango,'/')
+
+	#Ahora se realiza el escalado entre los valores [mini, maxi]
+	newRango = maxi-mini
+	newMat = matScalarOperation( matScalarOperation(newMat,newRango,'*'),mini,'+')
+
+	return newMat
 
 
 
+#imagen = imread('sobel.png')
+#imagen = rgb2gray(imagen)
+#imf    = arrayInt2Float(imagen) #imagen en formato flotante
+#imagen = arrayInt2Float(imagen)
 
+#Procesamiento con máscara
+#kernel = [[1/9.0,1/9.0,1/9.0],[1/9.0,1/9.0,1/9.0],[1/9.0,1/9.0,1/9.0]]
+#kernel = [[-1,0,1],[-2,0,2],[-1,0,1]]  #bordes verticales
+#kernel = [[-1,-2,-1],[0,0,0],[1,2,1]]  #bordes horizontales
 
-maximo = maxMatrix(imf)
-print maximo
+#imf = imconv(imf,kernel)
+#imf = mapMatrix(imf)
+#imf = umbralizar(imf,115)  #para vertical
+#imf = umbralizar(imf,100)  #para horizontal
+
 #imshow(imf)
-
+#imshow(imagen)
 
