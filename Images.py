@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from DSP_Utils import size, ones, zeros
+from DSP_Utils import size, ones, zeros, matScalarOperation
 from PIL import Image
 
 # SOURCE: http://www.sitepoint.com/manipulating-images-with-the-python-imaging-library/
@@ -90,9 +90,6 @@ def getPlane(imagen, pln = 'R'):
 				dataPlane[i][j] = (0,0,imagen[i][j][plane])
 	else:
 		return []
-
-
-	
 
 	return dataPlane
 
@@ -210,39 +207,6 @@ def minMatrix(mat):
 	return min(maxVec)
 
 
-def matScalarOperation(mat,scl,op = '+'):
-
-	m,n = size(mat)
-
-	if op == '+':
-
-		for i in range(m):
-			for j in range(n):
-				mat[i][j] += scl 
-
-	elif op == '-':
-
-		for i in range(m):
-			for j in range(n):
-				mat[i][j] -= scl
-
-	elif op == '*':
-
-		for i in range(m):
-			for j in range(n):
-				mat[i][j] *= scl
-
-	elif op == '/':
-
-		for i in range(m):
-			for j in range(n):
-				mat[i][j] /= scl
-
-	else:
-		print 'error operacion no valida'
-		return []
-
-	return mat
 
 def MatrixOperations(mat1,mat2,op = '+'):
 
