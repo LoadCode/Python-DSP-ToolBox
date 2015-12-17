@@ -157,7 +157,7 @@ def imconv(imagen, kernel,pad = None):
 	#Se aplica la convolución
 
 
-def printMat(mat):
+def printMatrix(mat):
 	#Imprime en pantalla la matriz que se le ingresa
 	m,n = size(mat)
 	for i in range(m):
@@ -177,7 +177,7 @@ def umbralizar(imagen,umbral = 100):
 	return imagen
 
 
-def arrayInt2Float(matrix):
+def matInt2Float(matrix):
 	#Recibe un array de dos dimensiones que contiene valores de tipo entero (no tuplas)
 	m,n = size(matrix)
 	mat = zeros(m,n)
@@ -208,6 +208,7 @@ def minMatrix(mat):
 		maxVec[i] = min(mat[i])
 
 	return min(maxVec)
+
 
 def matScalarOperation(mat,scl,op = '+'):
 
@@ -276,10 +277,12 @@ def mapMatrix(mat,mini = 0.0,maxi = 255.0):
 
 
 
+
+
 #imagen = imread('sobel.png')
 #imagen = rgb2gray(imagen)
-#imf    = arrayInt2Float(imagen) #imagen en formato flotante
-#imagen = arrayInt2Float(imagen)
+#imf    = matInt2Float(imagen) #imagen en formato flotante
+#imagen = matInt2Float(imagen)
 
 #Procesamiento con máscara
 #kernel = [[1/9.0,1/9.0,1/9.0],[1/9.0,1/9.0,1/9.0],[1/9.0,1/9.0,1/9.0]]
