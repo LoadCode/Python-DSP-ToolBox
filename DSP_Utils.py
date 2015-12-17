@@ -131,4 +131,79 @@ def matScalarOperation(mat,scl,op = '+'):
 		print 'error operacion no valida'
 		return []
 
+	return ma
+
+def printMatrix(mat):
+	#Imprime en pantalla la matriz que se le ingresa
+	m,n = size(mat)
+	for i in range(m):
+		print mat[i]
+
+
+def matInt2Float(matrix):
+	#Recibe un array de dos dimensiones que contiene valores de tipo entero (no tuplas)
+	m,n = size(matrix)
+	mat = zeros(m,n)
+	for i in range(m):
+		for j in range(n):
+			mat[i][j] = float(matrix[i][j])
+
 	return mat
+
+
+def maxMatrix(mat):
+	#Retorna el valor máximo en una matriz
+	N = len(mat) #obtiene el número de filas
+	maxVec = [0.0 for j in range(N)]
+
+	for i in range(N):
+		maxVec[i] = max(mat[i])
+
+	return max(maxVec)
+
+
+def minMatrix(mat):
+	#Retorna el valor mínimo presente en una matriz
+	N = len(mat) #obtiene el número de filas
+	maxVec = [0.0 for j in range(N)]
+
+	for i in range(N):
+		maxVec[i] = min(mat[i])
+
+	return min(maxVec)
+
+
+
+def MatrixOperations(mat1,mat2,op = '+'):
+
+	m1,n1 = size(mat1)
+	m2,n2 = size(mat2)
+	res = zeros(m1,n1)
+
+	if op == '+':
+		for i in range(m1):
+			for j in range(n1):
+				res[i][j] = mat1[i][j] + mat2[i][j]
+
+	return res
+
+
+def mapMatrix(mat,mini = 0.0,maxi = 255.0):
+
+	m,n = size(mat)
+	newMat = zeros(m,n)
+
+	#Mínimo y máximo valor presente en la matriz
+	mi = minMatrix(mat)
+	ma = maxMatrix(mat)
+	rango = ma-mi
+	newMat = matScalarOperation( matScalarOperation(mat,mi,'-'),rango,'/')
+
+	#Ahora se realiza el escalado entre los valores [mini, maxi]
+	newRango = maxi-mini
+	newMat = matScalarOperation( matScalarOperation(newMat,newRango,'*'),mini,'+')
+
+	return newMat
+
+
+
