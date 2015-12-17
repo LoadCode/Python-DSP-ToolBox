@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from DSP_Utils import size, ones
+from DSP_Utils import size, ones, zeros
 from PIL import Image
 
 # SOURCE: http://www.sitepoint.com/manipulating-images-with-the-python-imaging-library/
@@ -51,7 +51,7 @@ def rgb2gray(dataMat,formato = 'RGB'):
 def imshow(data,formato="RGB"):
 	m,n = size(data)
 	dataL = List1D(data)
-	if type(dataL[0]) == int: #para imágenes en escala de grices
+	if type(dataL[0]) == float: #para imágenes en escala de grices
 		formato = "L"
 	imagen = Image.new(formato,(n,m))
 	imagen.putdata(dataL)
@@ -104,8 +104,8 @@ def List1D(data):
 
 	if type(data[0][0]) == tuple:
 		lista = [(0,0,0) for k in range(m*n)]
-	elif type(data[0][0]) == int:  #else, is gray-scale
-		lista = [0 for k in range(m*n)]
+	elif type(data[0][0]) == float:  #else, is gray-scale
+		lista = [0.0 for k in range(m*n)]
 
 	h = 0
 	for k in range(m):
@@ -175,18 +175,39 @@ def umbralizar(imagen,umbral = 100):
 	return imagen
 
 
+def arrayInt2Float(matrix):
+	#Recibe un array de dos dimensiones que contiene valores de tipo entero (no tuplas)
+	m,n = size(matrix)
+	mat = zeros(m,n)
+	for i in range(m):
+		for j in range(n):
+			mat[i][j] = float(matrix[i][j])
+
+	return mat
+
+
+def maxMatrix(mat):
+	#Retorna el valor más grande de una matriz completa
+	N = len(mat) #obtiene el número de filas
+	maxVec = [0.0 for j in range(N)]
+
+	for i in range(N):
+		maxVec[i] = max(mat[i])
+
+	return max(maxVec)
+
 
 
 imagen = imread('sobel.png')
-#imshow(imagen)
-#kernel = [[-2,0,2],[-4,0,4],[-2,0,2]]
-kernel = [[-1,-2,-1],[0,0,0],[1,2,1]]
-#kernel = [[1,1,1],[1,1,1],[1,1,1]]
 imagen = rgb2gray(imagen)
-#imshow(imagen)
-#imagen = [[5,5,5,5,5],[5,5,30,5,5],[5,5,5,5,5],[40,40,40,40,40],[40,40,40,40,40]] #ver http://dmi.uib.es/~ygonzalez/VI/Material_del_Curso/Teoria/Tema5_Filtrado.pdf
-#kernel = [[1,1,1],[1,2,1],[1,1,1]]
-im = imconv(imagen,kernel)
-#im = umbralizar(im,80)
-imshow(im)
-#printMat(im)
+imf    = arrayInt2Float(imagen) #imagen en formato flotante
+
+
+
+
+
+maximo = maxMatrix(imf)
+print maximo
+#imshow(imf)
+
+
