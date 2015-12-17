@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from DSP_Utils import size
-
+from DSP_Utils import size, ones
 from PIL import Image
 
 # SOURCE: http://www.sitepoint.com/manipulating-images-with-the-python-imaging-library/
@@ -117,3 +116,77 @@ def List1D(data):
 	return lista
 
 
+def padMatrix(matrix, padlen, opt = '0'):
+	#Esta función retorna una matriz enmarcada con ceros es sus bordes por defecto, si se le
+	#indica la opción opt = 'r' se replican los bordes
+	m,n = size(matrix)
+	mat = [[0 for i in range(n+2*padlen)] for x in range(m+2*padlen)]		#inicializa el espacio en memoria
+
+	for i in range(padlen,m+padlen):
+		for j in range(padlen,n+padlen):
+			mat[i][j] = matrix[i-padlen][j-padlen]
+
+	return mat
+
+
+
+def imconv(imagen, kernel,pad = None):
+
+	mi, ni = size(imagen)
+	mk, nk = size(kernel)
+	padlen = mk/2
+
+	#conved = 
+
+	if mk%2 == 0 or mk != nk:
+		return [] #debe levantar una excepción porque el kernel debe ser cuadro e impar
+
+	imaConv = padMatrix(imagen,padlen)
+	imRes   = imagen
+	for i in range(mi):
+		for j in range(ni):
+			acu = 0
+			for x in range(i,mk+i):
+				for k in range(j,nk+j):
+					acu += imaConv[x][k]*kernel[x-i][k-j] + 10
+			imRes[i][j] = acu
+
+	return imRes
+	#Se aplica la convolución
+
+
+def printMat(mat):
+	#Imprime en pantalla la matriz que se le ingresa
+	m,n = size(mat)
+	for i in range(m):
+		print mat[i]
+
+
+def umbralizar(imagen,umbral = 100):
+	m,n = size(imagen)
+
+	for i in range(m):
+		for j in range(n):
+			if imagen[i][j] >= umbral:
+				imagen[i][j] = 254
+			else:
+				imagen[i][j] = 0
+
+	return imagen
+
+
+
+
+imagen = imread('sobel.png')
+#imshow(imagen)
+#kernel = [[-2,0,2],[-4,0,4],[-2,0,2]]
+kernel = [[-1,-2,-1],[0,0,0],[1,2,1]]
+#kernel = [[1,1,1],[1,1,1],[1,1,1]]
+imagen = rgb2gray(imagen)
+#imshow(imagen)
+#imagen = [[5,5,5,5,5],[5,5,30,5,5],[5,5,5,5,5],[40,40,40,40,40],[40,40,40,40,40]] #ver http://dmi.uib.es/~ygonzalez/VI/Material_del_Curso/Teoria/Tema5_Filtrado.pdf
+#kernel = [[1,1,1],[1,2,1],[1,1,1]]
+im = imconv(imagen,kernel)
+#im = umbralizar(im,80)
+imshow(im)
+#printMat(im)
