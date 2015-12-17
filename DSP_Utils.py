@@ -79,3 +79,43 @@ def round_vec(vec):
 		vec[n] = round(vec[n])
 	return vec
 
+
+def matScalarOperation(mat,scl,op = '+'):
+
+	m,n = size(mat)
+
+	if op == '+':
+
+		for i in range(m):
+			for j in range(n):
+				mat[i][j] += scl 
+
+	elif op == '-':
+
+		for i in range(m):
+			for j in range(n):
+				mat[i][j] -= scl
+
+	elif op == '*':
+
+		for i in range(m):
+			for j in range(n):
+				mat[i][j] *= scl
+
+	elif op == '/':
+
+		for i in range(m):
+			for j in range(n):
+				mat[i][j] /= scl
+
+	elif op == '^':
+
+		for i in range(m):
+			for j in range(n):
+				mat[i][j] **= scl
+
+	else:
+		print 'error operacion no valida'
+		return []
+
+	return mat
