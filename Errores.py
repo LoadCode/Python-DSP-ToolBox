@@ -8,3 +8,10 @@ class DimensionError(Exception):
 	def __str__(self):
 		print '   Dimension inconsistente del Array'
 
+
+class VectorDimensionError(Exception):
+	def __init__(self):
+		pass
+	def __str__(self):
+		print '  Python no puede operar el vector como una matriz de 1xN'
+
