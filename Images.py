@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from DSP_Utils import size, ones, zeros, matScalarOperation
+from DSP_Utils import *
 from PIL import Image
 
 # SOURCE: http://www.sitepoint.com/manipulating-images-with-the-python-imaging-library/
@@ -30,6 +30,27 @@ def imread(filename,gray=False):
 	return pixels
 
 
+def imshow(data,formato="RGB"):
+	m,n = size(data)
+	dataL = List1D(data)
+	if type(dataL[0]) == float or type(dataL[0]) == int: #para imágenes en escala de grices
+		formato = "L"
+	imagen = Image.new(formato,(n,m))
+	imagen.putdata(dataL)
+	imagen.show()
+
+def imsave(imagenMat,filename = 'Imagen sin nombre.png'):
+	#Esta función almacena en disco la imagen que se le pasa con el nombre que se le indica (debe llevar extensión)
+	
+	formato="RGB"
+	m,n = size(imagenMat)
+	dataL = List1D(imagenMat)
+	if type(dataL[0]) == float or type(dataL[0]) == int: #para imágenes en escala de grices
+		formato = "L"
+	imagen = Image.new(formato,(n,m))
+	imagen.putdata(dataL)
+	imagen.save(filename)
+
 def rgb2gray(dataMat,formato = 'RGB'):
 	
 	formatConv = 'L'  #Formato para convertir a escala de grices
@@ -44,19 +65,10 @@ def rgb2gray(dataMat,formato = 'RGB'):
 	pixelsList = list(imagine.getdata())
 	width, height = imagine.size
 	matriz = ImageMat(pixelsList,height,width)
-	matriz = arrayInt2Float(matriz)
+	matriz = matInt2Float(matriz)
 
 	return matriz
 
-
-def imshow(data,formato="RGB"):
-	m,n = size(data)
-	dataL = List1D(data)
-	if type(dataL[0]) == float: #para imágenes en escala de grices
-		formato = "L"
-	imagen = Image.new(formato,(n,m))
-	imagen.putdata(dataL)
-	imagen.show()
 
 def ImageMat(Lista1D,m,n): #Image reconstruction (volver a forma matricial)
 	imagemat = [Lista1D[i * n:(i + 1) * n] for i in xrange(m)]
@@ -102,7 +114,7 @@ def List1D(data):
 
 	if type(data[0][0]) == tuple:
 		lista = [(0,0,0) for k in range(m*n)]
-	elif type(data[0][0]) == float:  #else, is gray-scale
+	elif type(data[0][0]) == float or type(data[0][0]) == int:  #else, is gray-scale
 		lista = [0.0 for k in range(m*n)]
 
 	h = 0
