@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 from Errores import *   #se importan todas las excepciones personalizadas del toolbox
 
 
@@ -8,7 +9,7 @@ def ones(m,n=1):
 		if m == 1 and n != 1:
 			mat = [1.0 for x in range(0,n)]
 		elif n == 1 and m != 1:
-			mat = [1.0 for x in range(0,m)]
+			mat = [[1.0] for x in range(0,m)]
 		elif m != 1 and n != 1:
 			mat = [[1.0 for x in range(0,n)] for x in range(0,m)]
 		else:
@@ -23,7 +24,7 @@ def zeros(m,n=1):
 		if m == 1 and n != 1:
 			mat = [0.0 for x in range(0,n)]
 		elif n == 1 and m != 1:
-			mat = [0.0 for x in range(0,m)]
+			mat = [[0.0] for x in range(0,m)]
 		elif m != 1 and n != 1:
 			mat = [[0.0 for x in range(0,n)] for x in range(0,m)]
 		else:
@@ -40,7 +41,7 @@ def matInit(m,n,val=1.0):
 		if m == 1 and n != 1:
 			mat = [val for x in range(0,n)]
 		elif n == 1 and m != 1:
-			mat = [val for x in range(0,m)]
+			mat = [[val] for x in range(0,m)]
 		elif m != 1 and n != 1:
 			mat = [[val for x in range(0,n)] for x in range(0,m)]
 		else:
@@ -178,12 +179,39 @@ def MatrixOperations(mat1,mat2,op = '+'):
 
 	m1,n1 = size(mat1)
 	m2,n2 = size(mat2)
+
+	if n1 == None or n2 == None:  #Seguridad para el metodo
+		raise VectorDimensionError
+	
 	res = zeros(m1,n1)
 
 	if op == '+':
 		for i in range(m1):
 			for j in range(n1):
 				res[i][j] = mat1[i][j] + mat2[i][j]
+	
+	elif op == '-':
+		for i in range(m1):
+			for j in range(n1):
+				res[i][j] = mat1[i][j] - mat2[i][j]
+
+	elif op == '*':
+		#EJEMPLO: 
+		#b = [[3,2,4],[4,3,2],[7,6,4]]
+		#d = [[3],[4],[6]]
+		#res = MatrixOperations(b,d,'*')
+		#printMatrix(res)
+		if n1 == m2: #las matrices son de demensiones adecuadas
+			#En este método python si puede operar con vectores columna como matrices no con vectores fila
+			res = zeros(m1,n2)
+			for i in range(m1):
+				for j in range(n2):
+					acu = 0.0
+					for r in range(n1):
+						acu += mat1[i][r]*mat2[r][j]
+					res[i][j] = acu
+	else:
+		print 'Error operación no implementada'
 
 	return res
 
@@ -204,6 +232,3 @@ def mapMatrix(mat,mini = 0.0,maxi = 255.0):
 	newMat = matScalarOperation( matScalarOperation(newMat,newRango,'*'),mini,'+')
 
 	return newMat
-
-
-
