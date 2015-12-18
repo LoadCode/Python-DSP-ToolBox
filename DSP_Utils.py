@@ -22,7 +22,7 @@ def ones(m,n=1):
 def zeros(m,n=1):
 	if m != 0 or n != 0:
 		if m == 1 and n != 1:
-			mat = [0.0 for x in range(0,n)]
+			mat = [[0.0 for x in range(0,n)]]
 		elif n == 1 and m != 1:
 			mat = [[0.0] for x in range(0,m)]
 		elif m != 1 and n != 1:
@@ -84,7 +84,24 @@ def size(mat):
 				raise DimensionError
 		return [m,n]
 
-
+def typeArray(array):
+	#Esta función retorna una cadena indicando el tipo de arreglo que es pasado
+	if type(array) == float or type(array) == int:
+		return 'Single Value'
+	elif type(array) == str:
+		return 'Not a Numeric Array'
+	else:	
+		m,n = size(array)
+		if m == 1 and n != 1:
+			return 'Row Vector'
+		elif m != 1 and n == 1:
+			return 'Column Vector'
+		elif m > 1 and n > 1:
+			return 'Matrix'
+		elif m == n:
+			return 'Square Matrix'
+		else:
+			return 'Undefined Matrix Type'
 
 def round_vec(vec):
 	#Esta rutina aplica la función round() a cada elemento de un vector
@@ -132,7 +149,7 @@ def matScalarOperation(mat,scl,op = '+'):
 		print 'error operacion no valida'
 		return []
 
-	return ma
+	return mat
 
 def printMatrix(mat):
 	#Imprime en pantalla la matriz que se le ingresa
@@ -209,6 +226,9 @@ def MatrixOperations(mat1,mat2,op = '+'):
 					acu = 0.0
 					for r in range(n1):
 						acu += mat1[i][r]*mat2[r][j]
+					if type(res) == float or type(res) == int:
+						return acu
+
 					res[i][j] = acu
 	else:
 		print 'Error operación no implementada'
