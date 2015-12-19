@@ -280,3 +280,32 @@ def rangeStep(x_1,step,x_2):
 		return [x_1]
 
 	return y[:i]
+
+
+
+def list2VecFil(x):
+	#Esta función recibe una lista de una dimensión y la convierte en
+	#un vector fila válido para aplicar las funciones del módulo DSP_Utils
+	return [[x[i] for i in range(len(x))]]
+
+
+def list2VecCol(x):
+	#Esta función recibe una lista unidimensional y retorna un
+	#vector columna válido para aplicar las funciones del módulo DSP_Utils
+	return [[x[i]] for i in range(len(x))]
+
+def Col2Fil(x):
+	#Esta función convierte un vector columna en un vector fila
+	if typeArray(x) == 'Column Vector':
+		m,n = size(x)
+		return [[x[i][0] for i in range(m)]]
+	else:
+		return []
+
+def Fil2Col(x):
+	#Esta función convierte un vector fila en un vector columna
+	if typeArray(x) == 'Row Vector':
+		m,n = size(x)
+		return [[x[0][i]] for i in range(n)]
+	else:
+		return []
