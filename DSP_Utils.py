@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from Errores import *   #se importan todas las excepciones personalizadas del toolbox
-
+from math import floor
 
 def ones(m,n=1):
 
@@ -84,6 +84,8 @@ def size(mat):
 				raise DimensionError
 		return [m,n]
 
+
+
 def typeArray(array):
 	#Esta función retorna una cadena indicando el tipo de arreglo que es pasado
 	if type(array) == float or type(array) == int:
@@ -102,6 +104,7 @@ def typeArray(array):
 			return 'Square Matrix'
 		else:
 			return 'Undefined Matrix Type'
+
 
 def round_vec(vec):
 	#Esta rutina aplica la función round() a cada elemento de un vector
@@ -252,3 +255,28 @@ def mapMatrix(mat,mini = 0.0,maxi = 255.0):
 	newMat = matScalarOperation( matScalarOperation(newMat,newRango,'*'),mini,'+')
 
 	return newMat
+
+
+def rangeStep(x_1,step,x_2):
+	N = int(floor((x_2-x_1)/float(step)))+1
+	print 'N =',N
+	y = [0.0 for i in range(N)]
+	i = 0
+	if x_1 < x_2:
+		cont = x_1
+		while cont <= x_2:
+			y[i] = cont
+			cont += step
+			i += 1
+	elif x_2 < x_1:
+		if step >= 0:
+			return []
+		cont = x_1
+		while cont >= x_2:
+			y[i] = cont
+			cont += step
+			i += 1
+	else:
+		return [x_1]
+
+	return y[:i]
