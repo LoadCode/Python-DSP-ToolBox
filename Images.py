@@ -105,6 +105,72 @@ def getPlane(imagen, pln = 'R'):
 
 	return dataPlane
 
+def getPlaneR(imagen,matOption = None):
+	#esta función extrae la componente R de una imagen RGB.
+	#Sino se especifica otra opción, se retorna una matriz de formato RGB.
+	#Si el parámetro matOption es igual a 'matrix' se retorna una matriz de MxN con los valores numéricos de la componente R
+	if matOption == 'matrix':
+		m,n = size(imagen)  
+		matrix = zeros(m,n)
+
+		for i in range(m):
+			for j in range(n):
+				matrix[i][j] = imagen[i][j][0]
+
+		return matrix
+
+	elif matOption == None:
+		return getPlane(imagen,'R')
+
+	else:
+		print 'Opción no válida'
+		return []
+
+
+def getPlaneG(imagen,matOption = None):
+	#esta función extrae la componente G de una imagen RGB.
+	#Sino se especifica otra opción, se retorna una matriz de formato RGB.
+	#Si el parámetro matOption es igual a 'matrix' se retorna una matriz de MxN con los valores numéricos de la componente G
+	
+	if matOption == 'matrix':
+		m,n = size(imagen)  
+		matrix = zeros(m,n)
+
+		for i in range(m):
+			for j in range(n):
+				matrix[i][j] = imagen[i][j][1]
+
+		return matrix
+
+	elif matOption == None:
+		return getPlane(imagen,'G')
+
+	else:
+		print 'Opción no válida'
+		return []
+
+
+def getPlaneB(imagen,matOption = None):
+	#esta función extrae la componente B de una imagen RGB.
+	#Sino se especifica otra opción, se retorna una matriz de formato RGB.
+	#Si el parámetro matOption es igual a 'matrix' se retorna una matriz de MxN con los valores numéricos de la componente B
+	if matOption == 'matrix':
+		m,n = size(imagen)  
+		matrix = zeros(m,n)
+
+		for i in range(m):
+			for j in range(n):
+				matrix[i][j] = imagen[i][j][2]
+
+		return matrix
+
+	elif matOption == None:
+		return getPlane(imagen,'B')
+
+	else:
+		print 'Opción no válida'
+		return []
+
 
 def List1D(data):
 	#EJEMPLO: 
@@ -178,7 +244,6 @@ def umbralizar(imagen,umbral = 100):
 				imagen[i][j] = 0.0
 
 	return imagen
-
 
 
 
