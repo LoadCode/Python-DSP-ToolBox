@@ -41,6 +41,22 @@
     <ul><a href="#printMatrix">printMatrix</a></ul>
     <ul><a href="#round_vec">round_vec</a></ul>
   </li>
+  <li><strong>Trabajo con Imágenes.</strong></li>
+    <ul><a href="#imread">imread</a></ul>
+    <ul><a href="#imshow">imshow</a></ul>
+    <ul><a href="#rgb2gray">rgb2gray</a></ul>
+    <ul><a href="#imsave">imsave</a></ul>
+    <ul><a href="#fft2">fft2</a></ul>
+    <ul><a href="#ifft2">ifft2</a></ul>
+    <ul><a href="#dct2">dct2</a></ul>
+    <ul><a href="#idct2">idct2</a></ul>
+    <ul><a href="#imconv">imconv</a></ul>
+    <ul><a href="#getPlaneR">getPlaneR</a></ul>
+    <ul><a href="#getPlaneG">getPlaneG</a></ul>
+    <ul><a href="#getPlaneB">getPlaneB</a></ul>
+    <ul><a href="#setPlaneR">setPlaneR</a></ul>
+    <ul><a href="#setPlaneG">setPlaneG</a></ul>
+    <ul><a href="#setPlaneB">setPlaneB</a></ul>
   <li><strong>Métodos para Señales Unidimensionales.</strong></li>
     <ul><a href="#dct">dct</a></ul>
     <ul><a href="#idct">idct</a></ul>
@@ -54,24 +70,8 @@
     <ul><a href="#chevy1ord">chevy1ord</a></ul>
     <ul><a href="#chevy1">chevy1</a></ul>
     <ul><a href="#fixedPoint">fixedPoint</a></ul>
+  </ul>
 
-  <li><strong>Trabajo con Imágenes.</strong></li>
-    <ul><a href="#imread">imread</a></ul>
-    <ul><a href="#imsave">imsave</a></ul>
-    <ul><a href="#imshow">imshow</a></ul>
-    <ul><a href="#rgb2gray">rgb2gray</a></ul>
-    <ul><a href="#fft2">fft2</a></ul>
-    <ul><a href="#ifft2">ifft2</a></ul>
-    <ul><a href="#dct2">dct2</a></ul>
-    <ul><a href="#idct2">idct2</a></ul>
-    <ul><a href="#imconv">imconv</a></ul>
-    <ul><a href="#getPlaneR">getPlaneR</a></ul>
-    <ul><a href="#getPlaneG">getPlaneG</a></ul>
-    <ul><a href="#getPlaneB">getPlaneB</a></ul>
-    <ul><a href="#setPlaneR">setPlaneR</a></ul>
-    <ul><a href="#setPlaneG">setPlaneG</a></ul>
-    <ul><a href="#setPlaneB">setPlaneB</a></ul>
-</ul>
 
 <h2>
 <a id="designer-templates" class="anchor" href="#designer-templates" aria-hidden="true"><span class="octicon octicon-link"></span></a>Funciones de Uso Común</h2>
@@ -112,7 +112,7 @@
 <p align="center"><code>Coefs = [ 1,-3,5.25,-37 ]</code><br><code>Val = 2</code><br><code>Resul = polyval( Coefs, Val )</code></p>
 <p><br>Podemos imprimir el resultado en pantalla como:</p>
 <p align="center"><code>print 'Resultado =', Resul</code></p>
-<p>Lo que dará como resultado ..............poner resultado<br><br></p>
+<p>Lo que dará como resultado <code>-30.5</code>, que es el mismo valor que nos arroja Matlab.<br><br></p>
 
 
 <h3>
@@ -162,6 +162,63 @@
 <p><strong>Ejemplo:</strong> Sea la matriz <code>Matriz = [[2.32, 4.35, 5.64],[3.21, 6.43, 7.89]]</code> aplicando el método <strong>round_vec()</strong> el resultado sería:</p>
 <p align="center"><code>MatrizR = round_vec(Matriz)</code></p>
 <p align="center"><code>MatrizR = [ [2, 4, 6],[3, 6, 8] ]</code></p>
+
+
+
+<h2>
+<a id="designer-templates" class="anchor" href="#designer-templates" aria-hidden="true"><span class="octicon octicon-link"></span></a>Rutinas para el Tratamiento de Imágenes</h2>
+
+<p align="justify">En este apartado se pueden encontrar las funciones para el trabajo con imágenes, en las cuales se buscó mantener la sintaxis y los nombres las funciones de Matlab aunque se pueden presentar algunas variaciones y se agregan algunos métodos con comportamientos diferentes, pero manteniendo su utilidad.<br><br></p>
+
+
+<h3>
+<a id="imread" class="anchor" href="#imread" aria-hidden="true"><span class="octicon octicon-link"></span></a>Método <strong>imread</strong></h3>
+<p align="justify">La función <strong>imread</strong> realiza la lectura de una imágen, recibiendo como argumento el nombre de la misma con su respectiva extensión.</p>
+<p align="justify"><strong>Ejemplo:</strong> En el directorio actual se encuentra la imagen <code>matlab.png</code> a cual se muestra a continuación y puede <a href="matlab.png" target="_blank">ser descargada aquí</a>.</p>
+<p align="center"><img width="250" heigh="250" src="matlab.png"></p>
+
+<p align="justify">Para cargar dicha imagen en una variable de tipo array bidimensional, la cual llamaremos <code>imagen</code>, bastará la sigueinte línea.</p>
+
+<p align="center"><code>imagen = imread('matlab.png')</code></p>
+
+<p align="justify">Donde los elementos de esta matriz, al ser una imagen en formato RGB no serán valores numéricos directamente, sino <em>tuplas</em> de 3 elementos numéricos que corresponden a las contribuciones de <em>Rojo, Verde y Azul</em> en la imagen.</p>
+
+
+<h3>
+<a id="imshow" class="anchor" href="#imshow" aria-hidden="true"><span class="octicon octicon-link"></span></a>Método <strong>imshow</strong></h3>
+<p align="justify">La función <strong>imshow</strong> al igual que en Matlab, permite la visualización de la imagen que se le pasa como un parámetro matricial, dicho array puede ser en formato matricial puro, es decir, que la matriz que representa la imagen está compuesta por valores numéricos (por ejemplo una imagen en escala de grises) o por otro lado, un array bidimensional cuyos elementos son tuplas de 3 valores, por ejemplo para el formato RGB.</p>
+<p align="justify"><strong>Ejemplo:</strong> Anteriormente habíamos obtenido del directorio actual, la imagen <code>matlab.png</code> y la habíamos almacenado en la variable <code>imagen</code>. Ahora queremos visulizar dicha variable en formato de imagen, para lo cual solo debemos usar la siguiente linea.</p>
+
+<p align="center"><code>imshow(imagen)</code></p>
+
+<p align="justify">Imediatamente debe desplegarse la imagen en el visor de imágenes por defecto del sistema operativo mostrando un archivo temporal con nombre aleatorio, generado desde python y que ya no será visible en la carpeta de archivos (por si te preguntabas donde se alojaba ese archivo con nombre tan raro).</p>
+
+
+
+<h3>
+<a id="rgb2gray" class="anchor" href="#rgb2gray" aria-hidden="true"><span class="octicon octicon-link"></span></a>Método <strong>rgb2gray</strong></h3>
+<p align="justify">La función <strong>rgb2gray</strong> al igual que en Matlab, esta función nos retorna un array de dos dimensiones que contiene los valores en escala de grises para cada pixel de la imagen que se había pasado en formato RGB (aquel array de dos dimensiones cuyos elementos son tuplas con los valores de rojo, verde y azul)</p>
+<p align="justify"><strong>Ejemplo:</strong>Ya hemos leido la imagen <code>matlab.png</code> y la hemos almacenado en la variable de nombre <code>imagen</code> ahora vamos a almacenar el logotipo de Matlab en escala de grises en la variable <code>matlab_gris</code> y la mostraremos con <code>imshow( )</code> como vimos anteriormente, todo con las siguientes lineas.</p>
+<p align="center"><code>matlab_gris = rgb2gray(imagen)</code></p>
+<p align="center"><code>imshow('matlab.png')</code></p>
+
+<p align="justify">Imediatamente debe desplegarse la imagen en el visor de imágenes por defecto del sistema operativo mostrando un archivo temporal con nombre aleatorio, en escala de grises, tal como se ve en la siguiente imagen.</p>
+
+<p align="center"><img src="matlab_rgb2gray.png" width="250" heigh="250"></p>
+
+
+
+<h3>
+<a id="imsave" class="anchor" href="#imsave" aria-hidden="true"><span class="octicon octicon-link"></span></a>Método <strong>imsave</strong></h3>
+<p align="justify">La función <strong>imsave</strong> nos permite grabar imágenes en el disco. Esta rutina recibe como parámetros el array que representa la imagen y una cadena indicando el nombre con el cual se grabará en el disco (sin olvidar la extensión).</p>
+<p align="justify"><strong>Ejemplo:</strong> Queremos almacenar la imagen en escala de grises que obtuvimos en el ejemplo anterior y cuyos valores se encuentran en la variable <code>matlab_gris</code> y ahora vamos a almacenar dicha imagen en el directorio actual con el nombre <code>'Matlab Gris.png'</code>, todo esto se puede lograr con la sigueinte linea.</p>
+<p align="center"><code>imsave(matlab_gris,'Matlab Gris.png')</code></p>
+<p align="justify">Si se omite el parámetro de nombre de archivo y solo se pasa el array que contiene la imagen, la función asumirá un nombre por defecto como <code>'Imagen sin nombre.png'</code> y una vez almacenado el archivo llevara dicho nombre y extensión.</p>
+<p align="center"><code>imsave(matlab_gris)</code></p>
+
+
+
+
 
 <!--<h3>
 <a id="authors-and-contributors" class="anchor" href="#authors-and-contributors" aria-hidden="true"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
