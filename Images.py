@@ -39,6 +39,7 @@ def imshow(data,formato="RGB"):
 	imagen.putdata(dataL)
 	imagen.show()
 
+
 def imsave(imagenMat,filename = 'Imagen sin nombre.png'):
 	#Esta función almacena en disco la imagen que se le pasa con el nombre que se le indica (debe llevar extensión)
 	
@@ -50,6 +51,7 @@ def imsave(imagenMat,filename = 'Imagen sin nombre.png'):
 	imagen = Image.new(formato,(n,m))
 	imagen.putdata(dataL)
 	imagen.save(filename)
+
 
 def rgb2gray(dataMat,formato = 'RGB'):
 	
@@ -104,6 +106,7 @@ def getPlane(imagen, pln = 'R'):
 		return []
 
 	return dataPlane
+
 
 def getPlaneR(imagen,matOption = None):
 	#esta función extrae la componente R de una imagen RGB.
@@ -170,6 +173,56 @@ def getPlaneB(imagen,matOption = None):
 	else:
 		print 'Opción no válida'
 		return []
+
+
+def setPlane(imagen,matPlane,plane='R'):
+	#Esta función crea una nueva imagen de tipo RGB donde la componente que se indique, contendrá
+	#los nuevos valores indicados en la matriz 'matPlane'
+
+	m,n = size(imagen)
+	matRGB = [[(0,0,0) for h in range(m)] for x in range(n)]
+
+	if plane == 'r' or plane == 'R':
+		#Se opera con la componente rojo
+		for i in range(m):
+			for j in range(n):
+				matRGB[i][j] = (int(round(matPlane[i][j])),imagen[i][j][1],imagen[i][j][2])
+
+	elif plane == 'g' or plane == 'G':
+		#Se opera con la componente verde 
+		for i in range(m):
+			for j in range(n):
+				matRGB[i][j] = (imagen[i][j][0],int(round(matPlane[i][j])),imagen[i][j][2])
+
+	elif plane == 'b' or plane == 'B':
+		#Se opera con la componente azul	
+		for i in range(m):
+			for j in range(n):
+				matRGB[i][j] = (imagen[i][j][0],imagen[i][j][1],int(round(matPlane[i][j])))
+
+	else:
+		print 'Opción no válida'
+		return []
+
+	return matRGB
+
+
+def setPlaneR(imagen,matPlane):
+	#Esta función pone los valores en la matriz matPlane en el plano rojo (R) de la imagen RGB indicada
+	#print maxMatrix(matPlane)  #para ver cual es el mayr valor que se puede presentar en la matriz matPlane
+	return setPlane(imagen,matPlane,'R')
+
+
+def setPlaneG(imagen,matPlane):
+	#Esta función pone los valores en la matriz matPlane en el plano verde (G) de la imagen RGB indicada
+	#print maxMatrix(matPlane)  #para ver cual es el mayr valor que se puede presentar en la matriz matPlane
+	return setPlane(imagen,matPlane,'G')
+
+
+def setPlaneB(imagen, matPlane):
+	#Esta función pone los valores en la matriz matPlane en el plano azul (B) de la imagen RGB indicada
+	#print maxMatrix(matPlane)  #para ver cual es el mayr valor que se puede presentar en la matriz matPlane
+	return setPlane(imagen,matPlane,'B')
 
 
 def List1D(data):
@@ -265,3 +318,51 @@ def umbralizar(imagen,umbral = 100):
 #imshow(imf)
 #imshow(imagen)
 
+
+#							EJEMPLO PARA UN FILTRO DE MEDIANA
+
+#imOr = imread('matlab.png')
+#imshow(imOr)
+
+#rojo = getPlaneR(imOr,'matrix') #se extrae la componente de rojo en forma matricial
+#verde = getPlaneG(imOr,'matrix')
+#azul = getPlaneB(imOr,'matrix')
+
+#kernel = matScalarOperation(ones(3,3),1/9.0,'*')  #Obtenemos el filtro de mediana
+
+#newRed = imconv(rojo,kernel)  #filtramos la componente de rojo
+#newGreen = imconv(verde,kernel)
+#newBlue = imconv(azul,kernel)
+
+#newRed = mapMatrix(newRed) #Se mapea debido a que la convolución puede entregar valores del orden de miles
+
+#imOr = setPlaneR(imOr,newRed) #se ponen el componente rojo modificado en la imagen original de nuevo
+#imOr = setPlaneG(imOr,newGreen)
+#imOr = setPlaneB(imOr,newBlue)
+
+#imshow(imOr) #se muestra la imagen filtrada
+
+
+
+#							EJEMPLO PARA UN FILTRO DE REALCE DE BORDES
+
+#imOr = imread('matlab.png')
+#imshow(imOr)
+
+#rojo = getPlaneR(imOr,'matrix') #se extrae la componente de rojo en forma matricial
+#verde = getPlaneG(imOr,'matrix')
+#azul = getPlaneB(imOr,'matrix')
+
+#kernel = [[-1,-1,-1],[-1,9,-1],[-1,-1,-1]]
+
+#newRed = imconv(rojo,kernel)  #filtramos la componente de rojo
+#newGreen = imconv(verde,kernel)
+#newBlue = imconv(azul,kernel)
+
+#newRed = mapMatrix(newRed) #Se mapea debido a que la convolución puede entregar valores del orden de miles
+
+#imOr = setPlaneR(imOr,newRed) #se ponen el componente rojo modificado en la imagen original de nuevo
+#imOr = setPlaneG(imOr,newGreen)
+#imOr = setPlaneB(imOr,newBlue)
+
+#imshow(imOr) #se muestra la imagen con el rojo filtrado

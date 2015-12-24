@@ -132,7 +132,7 @@ def matScalarOperation(mat,scl,op = '+'):
 		print 'error operacion no valida'
 		return []
 
-	return ma
+	return mat
 
 def printMatrix(mat):
 	#Imprime en pantalla la matriz que se le ingresa
