@@ -178,25 +178,3 @@ def umbralizar(imagen,umbral = 100):
 				imagen[i][j] = 0.0
 
 	return imagen
-
-
-
-
-#imagen = imread('sobel.png')
-#imagen = rgb2gray(imagen)
-#imf    = matInt2Float(imagen) #imagen en formato flotante
-#imagen = matInt2Float(imagen)
-
-#Procesamiento con máscara
-#kernel = [[1/9.0,1/9.0,1/9.0],[1/9.0,1/9.0,1/9.0],[1/9.0,1/9.0,1/9.0]]
-#kernel = [[-1,0,1],[-2,0,2],[-1,0,1]]  #bordes verticales
-#kernel = [[-1,-2,-1],[0,0,0],[1,2,1]]  #bordes horizontales
-
-#imf = imconv(imf,kernel)
-#imf = mapMatrix(imf)
-#imf = umbralizar(imf,115)  #para vertical
-#imf = umbralizar(imf,100)  #para horizontal
-
-#imshow(imf)
-#imshow(imagen)
-

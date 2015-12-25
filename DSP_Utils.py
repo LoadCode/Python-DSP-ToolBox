@@ -88,7 +88,7 @@ def size(mat):
 
 def typeArray(array):
 	#Esta función retorna una cadena indicando el tipo de arreglo que es pasado
-	if type(array) == float or type(array) == int:
+	if type(array) == float or type(array) == int or type(array) == complex:
 		return 'Single Value'
 	elif type(array) == str:
 		return 'Not a Numeric Array'
