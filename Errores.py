@@ -15,3 +15,9 @@ class VectorDimensionError(Exception):
 	def __str__(self):
 		print '  Python no puede operar el vector como una matriz de 1xN'
 
+class OptionInvalidError(Exception):
+	def __init__(self):
+		pass
+
+	def __str__(self):
+		print '   Opcion no soportada para este metodo'
