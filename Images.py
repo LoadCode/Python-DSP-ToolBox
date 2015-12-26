@@ -265,13 +265,14 @@ def imconv(imagen, kernel,pad = None):
 	mk, nk = size(kernel)
 	padlen = mk/2
 
-	#conved = 
 
 	if mk%2 == 0 or mk != nk:
 		return [] #debe levantar una excepción porque el kernel debe ser cuadro e impar
 
 	imaConv = padMatrix(imagen,padlen)
 	imRes   = zeros(mi,ni)
+
+	#Se aplica la convolución espacial
 
 	for i in range(mi):
 		for j in range(ni):
@@ -282,7 +283,6 @@ def imconv(imagen, kernel,pad = None):
 			imRes[i][j] = acu
 
 	return imRes
-	#Se aplica la convolución
 
 
 
@@ -297,7 +297,6 @@ def umbralizar(imagen,umbral = 100):
 				imagen[i][j] = 0.0
 
 	return imagen
-
 
 
 #imagen = imread('sobel.png')
@@ -366,3 +365,4 @@ def umbralizar(imagen,umbral = 100):
 #imOr = setPlaneB(imOr,newBlue)
 
 #imshow(imOr) #se muestra la imagen con el rojo filtrado
+
