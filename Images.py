@@ -39,6 +39,7 @@ def imshow(data,formato="RGB"):
 	imagen.putdata(dataL)
 	imagen.show()
 
+
 def imsave(imagenMat,filename = 'Imagen sin nombre.png'):
 	#Esta función almacena en disco la imagen que se le pasa con el nombre que se le indica (debe llevar extensión)
 	
@@ -50,6 +51,7 @@ def imsave(imagenMat,filename = 'Imagen sin nombre.png'):
 	imagen = Image.new(formato,(n,m))
 	imagen.putdata(dataL)
 	imagen.save(filename)
+
 
 def rgb2gray(dataMat,formato = 'RGB'):
 	
@@ -146,13 +148,14 @@ def imconv(imagen, kernel,pad = None):
 	mk, nk = size(kernel)
 	padlen = mk/2
 
-	#conved = 
 
 	if mk%2 == 0 or mk != nk:
 		return [] #debe levantar una excepción porque el kernel debe ser cuadro e impar
 
 	imaConv = padMatrix(imagen,padlen)
 	imRes   = zeros(mi,ni)
+
+	#Se aplica la convolución espacial
 
 	for i in range(mi):
 		for j in range(ni):
@@ -163,7 +166,6 @@ def imconv(imagen, kernel,pad = None):
 			imRes[i][j] = acu
 
 	return imRes
-	#Se aplica la convolución
 
 
 
