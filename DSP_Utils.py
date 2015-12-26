@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from Errores import *   #se importan todas las excepciones personalizadas del toolbox
-
+from math import floor
 
 def ones(m,n=1):
 
@@ -22,7 +22,7 @@ def ones(m,n=1):
 def zeros(m,n=1):
 	if m != 0 or n != 0:
 		if m == 1 and n != 1:
-			mat = [0.0 for x in range(0,n)]
+			mat = [[0.0 for x in range(0,n)]]
 		elif n == 1 and m != 1:
 			mat = [[0.0] for x in range(0,m)]
 		elif m != 1 and n != 1:
@@ -86,6 +86,26 @@ def size(mat):
 
 
 
+def typeArray(array):
+	#Esta función retorna una cadena indicando el tipo de arreglo que es pasado
+	if type(array) == float or type(array) == int or type(array) == complex:
+		return 'Single Value'
+	elif type(array) == str:
+		return 'Not a Numeric Array'
+	else:	
+		m,n = size(array)
+		if m == 1 and n != 1:
+			return 'Row Vector'
+		elif m != 1 and n == 1:
+			return 'Column Vector'
+		elif m > 1 and n > 1:
+			return 'Matrix'
+		elif m == n:
+			return 'Square Matrix'
+		else:
+			return 'Undefined Matrix Type'
+
+
 def round_vec(vec):
 	#Esta rutina aplica la función round() a cada elemento de un vector
 	N = len(vec)
@@ -132,7 +152,7 @@ def matScalarOperation(mat,scl,op = '+'):
 		print 'error operacion no valida'
 		return []
 
-	return ma
+	return mat
 
 def printMatrix(mat):
 	#Imprime en pantalla la matriz que se le ingresa
@@ -209,6 +229,9 @@ def MatrixOperations(mat1,mat2,op = '+'):
 					acu = 0.0
 					for r in range(n1):
 						acu += mat1[i][r]*mat2[r][j]
+					if type(res) == float or type(res) == int:
+						return acu
+
 					res[i][j] = acu
 	else:
 		print 'Error operación no implementada'
@@ -232,3 +255,57 @@ def mapMatrix(mat,mini = 0.0,maxi = 255.0):
 	newMat = matScalarOperation( matScalarOperation(newMat,newRango,'*'),mini,'+')
 
 	return newMat
+
+
+def rangeStep(x_1,step,x_2):
+	N = int(floor((x_2-x_1)/float(step)))+1
+	print 'N =',N
+	y = [0.0 for i in range(N)]
+	i = 0
+	if x_1 < x_2:
+		cont = x_1
+		while cont <= x_2:
+			y[i] = cont
+			cont += step
+			i += 1
+	elif x_2 < x_1:
+		if step >= 0:
+			return []
+		cont = x_1
+		while cont >= x_2:
+			y[i] = cont
+			cont += step
+			i += 1
+	else:
+		return [x_1]
+
+	return y[:i]
+
+
+
+def list2VecFil(x):
+	#Esta función recibe una lista de una dimensión y la convierte en
+	#un vector fila válido para aplicar las funciones del módulo DSP_Utils
+	return [[x[i] for i in range(len(x))]]
+
+
+def list2VecCol(x):
+	#Esta función recibe una lista unidimensional y retorna un
+	#vector columna válido para aplicar las funciones del módulo DSP_Utils
+	return [[x[i]] for i in range(len(x))]
+
+def Col2Fil(x):
+	#Esta función convierte un vector columna en un vector fila
+	if typeArray(x) == 'Column Vector':
+		m,n = size(x)
+		return [[x[i][0] for i in range(m)]]
+	else:
+		return []
+
+def Fil2Col(x):
+	#Esta función convierte un vector fila en un vector columna
+	if typeArray(x) == 'Row Vector':
+		m,n = size(x)
+		return [[x[0][i]] for i in range(n)]
+	else:
+		return []

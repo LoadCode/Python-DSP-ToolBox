@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from DSP_Utils import size, ones, zeros, matScalarOperation
+from DSP_Utils import *
 from PIL import Image
 
 # SOURCE: http://www.sitepoint.com/manipulating-images-with-the-python-imaging-library/
@@ -31,6 +31,29 @@ def imread(filename,gray=False):
 	return pixels
 
 
+def imshow(data,formato="RGB"):
+	m,n = size(data)
+	dataL = List1D(data)
+	if type(dataL[0]) == float or type(dataL[0]) == int: #para imágenes en escala de grices
+		formato = "L"
+	imagen = Image.new(formato,(n,m))
+	imagen.putdata(dataL)
+	imagen.show()
+
+
+def imsave(imagenMat,filename = 'Imagen sin nombre.png'):
+	#Esta función almacena en disco la imagen que se le pasa con el nombre que se le indica (debe llevar extensión)
+	
+	formato="RGB"
+	m,n = size(imagenMat)
+	dataL = List1D(imagenMat)
+	if type(dataL[0]) == float or type(dataL[0]) == int: #para imágenes en escala de grices
+		formato = "L"
+	imagen = Image.new(formato,(n,m))
+	imagen.putdata(dataL)
+	imagen.save(filename)
+
+
 def rgb2gray(dataMat,formato = 'RGB'):
 	
 	formatConv = 'L'  #Formato para convertir a escala de grices
@@ -45,19 +68,10 @@ def rgb2gray(dataMat,formato = 'RGB'):
 	pixelsList = list(imagine.getdata())
 	width, height = imagine.size
 	matriz = ImageMat(pixelsList,height,width)
-	matriz = arrayInt2Float(matriz)
+	matriz = matInt2Float(matriz)
 
 	return matriz
 
-
-def imshow(data,formato="RGB"):
-	m,n = size(data)
-	dataL = List1D(data)
-	if type(dataL[0]) == float: #para imágenes en escala de grices
-		formato = "L"
-	imagen = Image.new(formato,(n,m))
-	imagen.putdata(dataL)
-	imagen.show()
 
 def ImageMat(Lista1D,m,n): #Image reconstruction (volver a forma matricial)
 	imagemat = [Lista1D[i * n:(i + 1) * n] for i in xrange(m)]
@@ -95,6 +109,123 @@ def getPlane(imagen, pln = 'R'):
 	return dataPlane
 
 
+def getPlaneR(imagen,matOption = None):
+	#esta función extrae la componente R de una imagen RGB.
+	#Sino se especifica otra opción, se retorna una matriz de formato RGB.
+	#Si el parámetro matOption es igual a 'matrix' se retorna una matriz de MxN con los valores numéricos de la componente R
+	if matOption == 'matrix':
+		m,n = size(imagen)  
+		matrix = zeros(m,n)
+
+		for i in range(m):
+			for j in range(n):
+				matrix[i][j] = imagen[i][j][0]
+
+		return matrix
+
+	elif matOption == None:
+		return getPlane(imagen,'R')
+
+	else:
+		print 'Opción no válida'
+		return []
+
+
+def getPlaneG(imagen,matOption = None):
+	#esta función extrae la componente G de una imagen RGB.
+	#Sino se especifica otra opción, se retorna una matriz de formato RGB.
+	#Si el parámetro matOption es igual a 'matrix' se retorna una matriz de MxN con los valores numéricos de la componente G
+	
+	if matOption == 'matrix':
+		m,n = size(imagen)  
+		matrix = zeros(m,n)
+
+		for i in range(m):
+			for j in range(n):
+				matrix[i][j] = imagen[i][j][1]
+
+		return matrix
+
+	elif matOption == None:
+		return getPlane(imagen,'G')
+
+	else:
+		print 'Opción no válida'
+		return []
+
+
+def getPlaneB(imagen,matOption = None):
+	#esta función extrae la componente B de una imagen RGB.
+	#Sino se especifica otra opción, se retorna una matriz de formato RGB.
+	#Si el parámetro matOption es igual a 'matrix' se retorna una matriz de MxN con los valores numéricos de la componente B
+	if matOption == 'matrix':
+		m,n = size(imagen)  
+		matrix = zeros(m,n)
+
+		for i in range(m):
+			for j in range(n):
+				matrix[i][j] = imagen[i][j][2]
+
+		return matrix
+
+	elif matOption == None:
+		return getPlane(imagen,'B')
+
+	else:
+		print 'Opción no válida'
+		return []
+
+
+def setPlane(imagen,matPlane,plane='R'):
+	#Esta función crea una nueva imagen de tipo RGB donde la componente que se indique, contendrá
+	#los nuevos valores indicados en la matriz 'matPlane'
+
+	m,n = size(imagen)
+	matRGB = [[(0,0,0) for h in range(m)] for x in range(n)]
+
+	if plane == 'r' or plane == 'R':
+		#Se opera con la componente rojo
+		for i in range(m):
+			for j in range(n):
+				matRGB[i][j] = (int(round(matPlane[i][j])),imagen[i][j][1],imagen[i][j][2])
+
+	elif plane == 'g' or plane == 'G':
+		#Se opera con la componente verde 
+		for i in range(m):
+			for j in range(n):
+				matRGB[i][j] = (imagen[i][j][0],int(round(matPlane[i][j])),imagen[i][j][2])
+
+	elif plane == 'b' or plane == 'B':
+		#Se opera con la componente azul	
+		for i in range(m):
+			for j in range(n):
+				matRGB[i][j] = (imagen[i][j][0],imagen[i][j][1],int(round(matPlane[i][j])))
+
+	else:
+		print 'Opción no válida'
+		return []
+
+	return matRGB
+
+
+def setPlaneR(imagen,matPlane):
+	#Esta función pone los valores en la matriz matPlane en el plano rojo (R) de la imagen RGB indicada
+	#print maxMatrix(matPlane)  #para ver cual es el mayr valor que se puede presentar en la matriz matPlane
+	return setPlane(imagen,matPlane,'R')
+
+
+def setPlaneG(imagen,matPlane):
+	#Esta función pone los valores en la matriz matPlane en el plano verde (G) de la imagen RGB indicada
+	#print maxMatrix(matPlane)  #para ver cual es el mayr valor que se puede presentar en la matriz matPlane
+	return setPlane(imagen,matPlane,'G')
+
+
+def setPlaneB(imagen, matPlane):
+	#Esta función pone los valores en la matriz matPlane en el plano azul (B) de la imagen RGB indicada
+	#print maxMatrix(matPlane)  #para ver cual es el mayr valor que se puede presentar en la matriz matPlane
+	return setPlane(imagen,matPlane,'B')
+
+
 def List1D(data):
 	#EJEMPLO: 
 	#lista = [[(1,2,3),(3,2,1)],[(8,7,6),(7,5,3)],[(3,8,9),(9,4,5)]]
@@ -103,7 +234,7 @@ def List1D(data):
 
 	if type(data[0][0]) == tuple:
 		lista = [(0,0,0) for k in range(m*n)]
-	elif type(data[0][0]) == float:  #else, is gray-scale
+	elif type(data[0][0]) == float or type(data[0][0]) == int:  #else, is gray-scale
 		lista = [0.0 for k in range(m*n)]
 
 	h = 0
@@ -135,13 +266,14 @@ def imconv(imagen, kernel,pad = None):
 	mk, nk = size(kernel)
 	padlen = mk/2
 
-	#conved = 
 
 	if mk%2 == 0 or mk != nk:
 		return [] #debe levantar una excepción porque el kernel debe ser cuadro e impar
 
 	imaConv = padMatrix(imagen,padlen)
 	imRes   = zeros(mi,ni)
+
+	#Se aplica la convolución espacial
 
 	for i in range(mi):
 		for j in range(ni):
@@ -152,7 +284,6 @@ def imconv(imagen, kernel,pad = None):
 			imRes[i][j] = acu
 
 	return imRes
-	#Se aplica la convolución
 
 
 
@@ -167,8 +298,6 @@ def umbralizar(imagen,umbral = 100):
 				imagen[i][j] = 0.0
 
 	return imagen
-
-
 
 
 #imagen = imread('sobel.png')
@@ -188,4 +317,53 @@ def umbralizar(imagen,umbral = 100):
 
 #imshow(imf)
 #imshow(imagen)
+
+
+#							EJEMPLO PARA UN FILTRO DE MEDIANA
+
+#imOr = imread('matlab.png')
+#imshow(imOr)
+
+#rojo = getPlaneR(imOr,'matrix') #se extrae la componente de rojo en forma matricial
+#verde = getPlaneG(imOr,'matrix')
+#azul = getPlaneB(imOr,'matrix')
+
+#kernel = matScalarOperation(ones(3,3),1/9.0,'*')  #Obtenemos el filtro de mediana
+
+#newRed = imconv(rojo,kernel)  #filtramos la componente de rojo
+#newGreen = imconv(verde,kernel)
+#newBlue = imconv(azul,kernel)
+
+#newRed = mapMatrix(newRed) #Se mapea debido a que la convolución puede entregar valores del orden de miles
+
+#imOr = setPlaneR(imOr,newRed) #se ponen el componente rojo modificado en la imagen original de nuevo
+#imOr = setPlaneG(imOr,newGreen)
+#imOr = setPlaneB(imOr,newBlue)
+
+#imshow(imOr) #se muestra la imagen filtrada
+
+
+
+#							EJEMPLO PARA UN FILTRO DE REALCE DE BORDES
+
+#imOr = imread('matlab.png')
+#imshow(imOr)
+
+#rojo = getPlaneR(imOr,'matrix') #se extrae la componente de rojo en forma matricial
+#verde = getPlaneG(imOr,'matrix')
+#azul = getPlaneB(imOr,'matrix')
+
+#kernel = [[-1,-1,-1],[-1,9,-1],[-1,-1,-1]]
+
+#newRed = imconv(rojo,kernel)  #filtramos la componente de rojo
+#newGreen = imconv(verde,kernel)
+#newBlue = imconv(azul,kernel)
+
+#newRed = mapMatrix(newRed) #Se mapea debido a que la convolución puede entregar valores del orden de miles
+
+#imOr = setPlaneR(imOr,newRed) #se ponen el componente rojo modificado en la imagen original de nuevo
+#imOr = setPlaneG(imOr,newGreen)
+#imOr = setPlaneB(imOr,newBlue)
+
+#imshow(imOr) #se muestra la imagen con el rojo filtrado
 
