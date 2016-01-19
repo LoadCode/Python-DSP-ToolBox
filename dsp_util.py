@@ -3,9 +3,9 @@
 from Errores import *   #se importan todas las excepciones personalizadas del toolbox
 from math import floor
 
-def ones(m,n=0):
+def ones(m,n=None):
 	#Esta función retorna una arreglo bidimensional que puede ser vector fila, columna o matriz de MxN
-	#Si M!=0 y N==0 se retorna una lista de Python compuesta de 1s
+	#Si M!=0 y N==None se retorna una lista de Python compuesta de 1s
 	#Si M=0 y N=0 se retorna una matriz vacía.
 	#Si M=1 y N=1 se retorna un escalar
 	#Ejemplo: crear una lista:		     lista = ones(5) #lista Python de 5 elementos
@@ -13,7 +13,7 @@ def ones(m,n=0):
 	#Ejemplo: crear un vector fila:		 vecFil = ones(1,6) #Vector fila de 6 elementos 1x6
 	#Ejemplo: crear una matriz:		     matriz = ones(4,6) #Matriz 4x6
 
-	if m != 0 and n == 0:
+	if m != 0 and n == None:
 		mat = [1.0 for i in range(0,m)]
 
 	elif m != 0 or n != 0:
@@ -34,9 +34,9 @@ def ones(m,n=0):
 
 
 
-def ones(m,n=0):
+def zeros(m,n=None):
 	#Esta función retorna una arreglo bidimensional que puede ser vector fila, columna o matriz de MxN
-	#Si M!=0 y N==0 se retorna una lista de Python compuesta de 0s
+	#Si M!=0 y N==None se retorna una lista de Python compuesta de 0s
 	#Si M=0 y N=0 se retorna una matriz vacía.
 	#Si M=1 y N=1 se retorna un escalar
 	#Ejemplo: crear una lista:		     lista = zeros(5) #lista Python de 5 elementos
@@ -44,7 +44,7 @@ def ones(m,n=0):
 	#Ejemplo: crear un vector fila:		 vecFil = zeros(1,6) #Vector fila de 6 elementos 1x6
 	#Ejemplo: crear una matriz:		     matriz = zeros(4,6) #Matriz 4x6
 
-	if m != 0 and n == 0:
+	if m != 0 and n == None:
 		mat = [0.0 for i in range(0,m)]
 
 	elif m != 0 or n != 0:
@@ -65,7 +65,7 @@ def ones(m,n=0):
 
 
 
-def matInit(m,n=0,val=1.0):
+def matInit(m,n=None,val=1.0):
 
 	#Esta función retorna una matriz o vector cuyos valores está inicializados con el valor que se pasa como
 	#tercer parámetro.
@@ -77,7 +77,7 @@ def matInit(m,n=0,val=1.0):
 
 	val = float(val)
 	
-	if m != 0 and n == 0:
+	if m != 0 and n == None:
 		mat = [val for i in range(m)]
 
 	elif m != 0 or n != 0:
@@ -185,6 +185,7 @@ def typeArray(array):
 	#			'Square Matrix'
 	#			'Simple Python List'   -> una lista de Python normal (no matricial)
 	#			'Simple Python Tuple'  -> una lista de Python normal (no matricial)
+	#			'Not An Array' -> en caso de inconsistencias
 
 	if (not isinstance(array,list)) and (not isinstance(array,tuple)):
 		return 'Not An Array'
@@ -205,59 +206,138 @@ def typeArray(array):
 				return 'Simple Python List'
 
 
-def round_vec(vec):
-	#Esta rutina aplica la función round() a cada elemento de un vector
-	N = len(vec)
-	for n in range(0,N):
-		vec[n] = round(vec[n])
-	return vec
+
+def roundArray(array):
+	#Esta rutina aplica el método round a todos los elementos de un array que es pasado como argumento.
+	#se verifica que el array tenga datos consistentes (listas simples, vectores o matrices) si se pasa una tupla se retorna una lista
+	#Retorna un array con todos los valores redondeados según el método round.
+
+	#verificamos el tipo de datos
+	tipo = typeArray(array)
+
+	if tipo == 'Not An Array':
+		raise DataTypeError
+
+	m,n = size(array)
+	array2 = zeros(m,n)
+	if tipo == 'Row Vector' or tipo == 'Column Vector' or tipo == 'Matrix' or tipo == 'Square Matrix':
+		for i in range(m):
+			for j in range(n):
+				array2[i][j] = round(array[i][j])
+
+	elif tipo == 'Simple Python List' or tipo == 'Simple Python Tuple':
+		for i in range(m):
+			array2[i] = round(array[i])
+		return array2
+
+	return array2
+
 
 
 def matScalarOperation(mat,scl,op = '+'):
+	#Esta función aplica una operación entre un escalar y un array
+	#
+	#Recibe:		array  (matriz, vector, lista simple de python o tupla)
+	#				escalar (un valor numérico)
+	#				cadena con operación (por defecto '+' le suma el escalar a todos los elementos del array)
+	#
+	#Lanza la excepción OptionInvalidError si se proporciona una operación no soportada
+
+	#Se verifica que el array ingresado sea consistente (que efectivamente sea un array)
+
+	if typeArray(mat) == 'Not An Array':  
+		raise DataTypeError
 
 	m,n = size(mat)
+	array = zeros(m,n)
+	if n != None:
+		if op == '+':
 
-	if op == '+':
+			for i in range(m):
+				for j in range(n):
+					array[i][j] = mat[i][j] + scl 
 
-		for i in range(m):
-			for j in range(n):
-				mat[i][j] += scl 
+		elif op == '-':
 
-	elif op == '-':
+			for i in range(m):
+				for j in range(n):
+					array[i][j] = mat[i][j] - scl
 
-		for i in range(m):
-			for j in range(n):
-				mat[i][j] -= scl
+		elif op == '*':
 
-	elif op == '*':
+			for i in range(m):
+				for j in range(n):
+					array[i][j] = mat[i][j] * scl
 
-		for i in range(m):
-			for j in range(n):
-				mat[i][j] *= scl
+		elif op == '/':
 
-	elif op == '/':
+			for i in range(m):
+				for j in range(n):
+					array[i][j] = mat[i][j] / scl
 
-		for i in range(m):
-			for j in range(n):
-				mat[i][j] /= scl
+		elif op == '^':
 
-	elif op == '^':
+			for i in range(m):
+				for j in range(n):
+					array[i][j] = mat[i][j]**scl
 
-		for i in range(m):
-			for j in range(n):
-				mat[i][j] **= scl
+		else:
+			print 'error operacion no valida'
+			raise OptionInvalidError
 
 	else:
-		print 'error operacion no valida'
-		return []
+		if op == '+':
 
-	return mat
+			for i in range(m):
+					array[i] = mat[i] + scl 
 
-def printMatrix(mat):
-	#Imprime en pantalla la matriz que se le ingresa
-	m,n = size(mat)
-	for i in range(m):
-		print mat[i]
+		elif op == '-':
+
+			for i in range(m):
+					array[i] = mat[i] - scl
+
+		elif op == '*':
+
+			for i in range(m):
+					array[i] = mat[i] * scl
+
+		elif op == '/':
+
+			for i in range(m):
+					array[i] = mat[i] / scl
+
+		elif op == '^':
+
+			for i in range(m):
+					array[i] = mat[i]**scl
+
+		else:
+			print 'error operacion no valida'
+			raise OptionInvalidError
+
+
+	return array
+
+
+
+def printArray(mat):
+	#Imprime en pantalla el array que es ingresado como parámetro
+	#puede recibir listas, tuplas y arreglos de tipo maticial
+	#Lanza la excepción DataTypeError  si el parámetro no es de tipo Array o presenta alguna inconsistencia.
+
+	tipo = typeArray(mat)
+
+	if tipo == 'Not An Array':
+		raise DataTypeError
+
+	if tipo == 'Simple Python List' or tipo == 'Simple Python Tuple':
+		m = len(mat)
+		for i in range(m):
+			print mat[i]
+	else:
+		m,n = size(mat)
+		for i in range(m):
+			print mat[i]
 
 
 def matInt2Float(matrix):
@@ -271,26 +351,64 @@ def matInt2Float(matrix):
 	return mat
 
 
-def maxMatrix(mat):
-	#Retorna el valor máximo en una matriz
-	N = len(mat) #obtiene el número de filas
-	maxVec = [0.0 for j in range(N)]
+def maxArray(mat,opt=None):
+	#Este método retorna el valor máximo presente en un array (lista, tupla, vector fila, vector columna o arreglo matricial)
+	#Retorna: un escalar el cual es el valor máximo presente en todo el array
+	#Si la opción opt es igual a 'v' retorna un vector con los mayores valores de cada fila en una matriz
+	#Lanza una excepción de tipo DataTypeError en caso que el parámetro no sea un array válido
+	#Lanza una excepción de tipo OptionInvalidError si el parámetro opt no tiene un caracter válido
 
-	for i in range(N):
-		maxVec[i] = max(mat[i])
+	#se verifica si la opción ingresada es válida
+	if opt != None and opt != 'v':
+		raise OptionInvalidError
 
-	return max(maxVec)
+	tipo = typeArray(mat)
+
+	if tipo == 'Not An Array':
+		raise DataTypeError
+	elif tipo == 'Simple Python List' or tipo == 'Simple Python Tuple':
+		return max(mat)
+	elif tipo == 'Matrix' and opt == 'v':
+		m,n = size(mat)
+		maxVec = zeros(m)
+		for i in range(m):  #Se extraen los máximos valores de cada fila del array
+			maxVec[i] = max(mat[i])
+		return maxVec
+	else:
+		m,n = size(mat)
+		maxVec = zeros(m)
+
+		for i in range(m):  #Se extraen los máximos valores de cada fila del array
+			maxVec[i] = max(mat[i])
+	return max(maxVec)  #Se extrae el 'mayor de los mayores'
 
 
-def minMatrix(mat):
-	#Retorna el valor mínimo presente en una matriz
-	N = len(mat) #obtiene el número de filas
-	maxVec = [0.0 for j in range(N)]
+def minArray(mat):
+	#Este método retorna el valor mínimo presente en un array (lista, tupla, vector fila, vector columna o arreglo matricial)
+	#Retorna: un escalar el cual es el valor mínimo presente en todo el array
+	#Si la opción opt es igual a 'v' retorna un vector con los menores valores de cada fila en una matriz
+	#Lanza una excepción de tipo DataTypeError en caso que el parámetro no sea un array válido
 
-	for i in range(N):
-		maxVec[i] = min(mat[i])
+	tipo = typeArray(mat)
 
-	return min(maxVec)
+	if tipo == 'Not An Array':
+		raise DataTypeError
+	elif tipo == 'Simple Python List' or tipo == 'Simple Python Tuple':
+		return min(mat)
+	elif tipo == 'Matrix' and opt == 'v':
+		m,n = size(mat)
+		minVec = zeros(m)
+		for i in range(m):  #Se extraen los mínimos valores de cada fila del array
+			minVec[i] = min(mat[i])
+		return minVec
+	else:
+		m,n = size(mat)
+		minVec = zeros(m)
+
+		for i in range(m):  #Se extraen los mínimos valores de cada fila del array
+			minVec[i] = min(mat[i])
+
+	return min(minVec)  #Se extrae el 'mayor de los mayores'
 
 
 
