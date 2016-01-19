@@ -21,3 +21,11 @@ class OptionInvalidError(Exception):
 
 	def __str__(self):
 		print '   Opcion no soportada para este metodo'
+
+
+class DataTypeError(Exception):
+	def __init__(self):
+		pass
+
+	def __str__(self):
+		print '   Tipo de dato no soportado para este metodo'
