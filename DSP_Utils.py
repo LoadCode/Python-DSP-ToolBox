@@ -3,82 +3,171 @@
 from Errores import *   #se importan todas las excepciones personalizadas del toolbox
 from math import floor
 
-def ones(m,n=1):
+def ones(m,n=0):
+	#Esta función retorna una arreglo bidimensional que puede ser vector fila, columna o matriz de MxN
+	#Si M!=0 y N==0 se retorna una lista de Python compuesta de 1s
+	#Si M=0 y N=0 se retorna una matriz vacía.
+	#Si M=1 y N=1 se retorna un escalar
+	#Ejemplo: crear una lista:		     lista = ones(5) #lista Python de 5 elementos
+	#Ejemplo: crear un vector columna:	 vecCol = ones(6,1) #Vector columna de 6 elementos 6x1
+	#Ejemplo: crear un vector fila:		 vecFil = ones(1,6) #Vector fila de 6 elementos 1x6
+	#Ejemplo: crear una matriz:		     matriz = ones(4,6) #Matriz 4x6
 
-	if m != 0 or n != 0:
-		if m == 1 and n != 1:
-			mat = [1.0 for x in range(0,n)]
-		elif n == 1 and m != 1:
+	if m != 0 and n == 0:
+		mat = [1.0 for i in range(0,m)]
+
+	elif m != 0 or n != 0:
+		
+		if m == 1 and n != 1:  #Vector  fila
+			mat = [[1.0 for x in range(0,n)]]
+		elif n == 1 and m != 1: #Vector columna
 			mat = [[1.0] for x in range(0,m)]
 		elif m != 1 and n != 1:
-			mat = [[1.0 for x in range(0,n)] for x in range(0,m)]
+			mat = [[1.0 for x in range(0,n)] for x in range(0,m)] #Matriz MxN
 		else:
-			mat = 1.0
+			mat = 1.0 #Si m=1 y n=1 se retorna un escalar
 	else:
-		mat = []
+		mat = [[]]   #Si M=0 y N=0 se retorna una matriz vacía 
 
 	return mat
 
-def zeros(m,n=1):
-	if m != 0 or n != 0:
-		if m == 1 and n != 1:
+
+
+
+def ones(m,n=0):
+	#Esta función retorna una arreglo bidimensional que puede ser vector fila, columna o matriz de MxN
+	#Si M!=0 y N==0 se retorna una lista de Python compuesta de 0s
+	#Si M=0 y N=0 se retorna una matriz vacía.
+	#Si M=1 y N=1 se retorna un escalar
+	#Ejemplo: crear una lista:		     lista = zeros(5) #lista Python de 5 elementos
+	#Ejemplo: crear un vector columna:	 vecCol = zeros(6,1) #Vector columna de 6 elementos 6x1
+	#Ejemplo: crear un vector fila:		 vecFil = zeros(1,6) #Vector fila de 6 elementos 1x6
+	#Ejemplo: crear una matriz:		     matriz = zeros(4,6) #Matriz 4x6
+
+	if m != 0 and n == 0:
+		mat = [0.0 for i in range(0,m)]
+
+	elif m != 0 or n != 0:
+		
+		if m == 1 and n != 1:  #Vector  fila
 			mat = [[0.0 for x in range(0,n)]]
-		elif n == 1 and m != 1:
+		elif n == 1 and m != 1: #Vector columna
 			mat = [[0.0] for x in range(0,m)]
 		elif m != 1 and n != 1:
-			mat = [[0.0 for x in range(0,n)] for x in range(0,m)]
+			mat = [[0.0 for x in range(0,n)] for x in range(0,m)] #Matriz MxN
 		else:
-			mat = 0.0
+			mat = 0.0  #Si M=1 y N=1 se retorna un escalar
 	else:
-		mat = []
+		mat = [[]]   #Si M=0 y N=0 se retorna una matriz vacía 
 
 	return mat
 
-def matInit(m,n,val=1.0):
+
+
+
+def matInit(m,n=0,val=1.0):
+
+	#Esta función retorna una matriz o vector cuyos valores está inicializados con el valor que se pasa como
+	#tercer parámetro.
+	#Si M=1 y N=1 se retorna un escalar
+	#Ejemplo: crear una lista python con valores 3.0 ->                   lista = matInit(10,val=3.0)
+	#Ejemplo: crear un vector fila de 10 elementos con valores 2.0 ->    vecFil = matInit(1,10,2.0)
+	#Ejemplo: crear un vector columna de 10 elementos con valores 2.0 -> vecCol = matInit(10,1,2.0)
+	#Ejemplo: crear una matriz de 4x7 con valores 78.0 ->				 matriz = matInit(4,7,78.0)	
 
 	val = float(val)
-	if m != 0 or n != 0:
+	
+	if m != 0 and n == 0:
+		mat = [val for i in range(m)]
+
+	elif m != 0 or n != 0:
 		if m == 1 and n != 1:
-			mat = [val for x in range(0,n)]
+			mat = [[val for x in range(0,n)]] #Vector fila 
 		elif n == 1 and m != 1:
-			mat = [[val] for x in range(0,m)]
+			mat = [[val] for x in range(0,m)] #Vector columna
 		elif m != 1 and n != 1:
-			mat = [[val for x in range(0,n)] for x in range(0,m)]
+			mat = [[val for x in range(0,n)] for x in range(0,m)] #Matriz MxN con valores iniciales 'val'
 		else:
-			mat = val
+			mat = val #Si M=1 y N=1 se retorna un escalar
 	else:
-		mat = []
+		mat = [[]]   #si M=0, N=0 entonces se retorna una matriz vacía
 
 	return mat
 
-def linspace(xmin,xmax,n = 100):
+
+
+
+def linspace(xmin,xmax,n = 100,tipo='l'):
 	
-	#Rutina para la generación de vectores con elementos linealmente espaciados (ver documentación)
+	#Rutina para la generación de vectores con elementos linealmente espaciados
+	# xmin puede ser mayor a xmax, la serie será entregada en orden inverso
+	#Su lista de parámetros es:
+	#			xmin = valor inicial del array
+	#			xmax = valor final del array
+	#			   n = cantidad de elementos del array
+	#			tipo = Tipo de array a retornar: 
+	#						'l' -> valor por defecto que retorna una lista de Python
+	#						'f' -> retorna un vector fila
+	#						'c' -> retorna un vector columna
+	#					si se pasa una opción no válida se lanza la excepción OptionInvalidError
 	
-	xmin = float(xmin) #En caso que los valores se pasen como números enteros
+	#En caso que los valores se pasen como números enteros
+	xmin = float(xmin)
 	xmax = float(xmax)
 
-	stp = (xmax-xmin)/(n-1)
-	vec = [0 for x in range(0,n)] #Inicialización del vector que almacenará los valores
-	vec[0] = xmin
+	stp = (xmax-xmin)/(n-1) #Valor para el 'paso' entre elementos de la serie
 
+	vec = [0.0 for x in range(0,n)] #Inicialización del vector que almacenará los valores
+	#se llena la lista con la serie ya completa
+	vec[0] = xmin
 	for x in range(1,n):
 		vec[x] = vec[x-1] + stp
-
 	vec[n-1] = xmax
 
-	return vec
+	if tipo == 'l':
+		return vec
+
+	elif tipo == 'f':  #Se convierte la lista a un vector fila y se retorna
+		return list2VecFil(vec)
+
+	elif tipo == 'c':  #Se convierte la lista a un vector columna y se retorna
+		return list2VecCol(vec)
+
+	else:  #si se pasa un 'tipo' no reconocido se lanza una excepción
+		raise OptionInvalidError
+
 
 
 
 def size(mat):
-	#Esta función retorna las dimensiones de un Array que es pasado como parámetro
+	#Esta función retorna una lista con las dimensiones de una lista o tupla de dos dimensiones (no solo numéricas)
+	#En caso de que todas sus columnas no posean la misma cantidad de elementos se lanzará una excepción de tipo
+	# DimensionError por inconsistencia en las dimensiones.
+	
+	#En caso de que no se pase una lista
+	if not isinstance(mat,list) and not isinstance(mat,tuple):
+		raise TypeError
+
 	m = len(mat)
+	cont = 0
+
+	#Verificamos que no hayan problemas de dimensión en cuanto al número de columnas para listas simples de Python
+	for i in range(m):
+		try:
+			k = len(mat[i])
+		except TypeError:
+			cont += 1
+
+	if cont < m and cont != 0:
+		raise DimensionError
+
+	#sino hay problema de dimensiones inconsistentes, se puede calcular las dimensiones
 	try:
 		n = len(mat[0])
 	except TypeError:
-		return [m,None]  #porque es vector fila (1 fila)
+		return [m,None]  #Se pasó como argumento una lista simple de Python ejemplo: [1,2,3,4]
 	else:
+		#Se verifica que todas las columnas tengan el mismo número de elementos, de lo contrario se poseen errores de dimensión
 		for i in range(m):
 			if len(mat[i]) != n:
 				raise DimensionError
@@ -86,12 +175,19 @@ def size(mat):
 
 
 
+
 def typeArray(array):
 	#Esta función retorna una cadena indicando el tipo de arreglo que es pasado
-	if type(array) == float or type(array) == int or type(array) == complex:
-		return 'Single Value'
-	elif type(array) == str:
-		return 'Not a Numeric Array'
+	#Retorna:
+	#			'Row Vector'
+	#			'Column Vector'
+	#			'Matrix'
+	#			'Square Matrix'
+	#			'Simple Python List'   -> una lista de Python normal (no matricial)
+	#			'Simple Python Tuple'  -> una lista de Python normal (no matricial)
+
+	if (not isinstance(array,list)) and (not isinstance(array,tuple)):
+		return 'Not An Array'
 	else:	
 		m,n = size(array)
 		if m == 1 and n != 1:
@@ -103,7 +199,10 @@ def typeArray(array):
 		elif m == n:
 			return 'Square Matrix'
 		else:
-			return 'Undefined Matrix Type'
+			if isinstance(array,tuple):
+				return 'Simple Python Tuple'
+			else:
+				return 'Simple Python List'
 
 
 def round_vec(vec):
