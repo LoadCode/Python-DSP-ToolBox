@@ -1,11 +1,25 @@
 
 revisar los siguientes métodos:
-	ones:      ok
-	zeros:     ok
-	matInit:   ok
-	linspace:  ok
-	size:      ok
-	typeArray: ok
+	ones:       		ok
+	zeros:      		ok
+	matInit:    		ok
+	linspace:   		ok
+	size:       		ok
+	typeArray:  		ok
+	roundArray: 		ok
+	matScalarOperation: ok
+	printMatrix:		ok
+	maxMatrix:			ok
+	minMatrix:			ok
+	MatrixOperations:	no
+	matInt2Float:		no
+	mapMatrix:			no
+	rangeStep:			no
+	list2VecFil:		no
+	list2VecCol:		no
+	Col2Fil:			no
+	Fil2Col:			no
+
 
 
 
