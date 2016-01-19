@@ -1,0 +1,13 @@
+
+Implementar las siguientes funciones:
+
+
+arrayAbs()
+fftshift()
+evaluar rangeStep() para efectos de plot de fft
+plot()
+subplot()
+
+
+
+revisar ones, zeros...entre otras
