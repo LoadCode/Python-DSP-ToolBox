@@ -1,13 +1,28 @@
 
+revisar los siguientes métodos:
+	ones:      ok
+	zeros:     ok
+	matInit:   ok
+	linspace:  ok
+	size:      ok
+	typeArray: ok
+
+
+
 Implementar las siguientes funciones:
 
-
+isSquare()  #pasa saber si una matriz es cuadrada
 arrayAbs()
 fftshift()
 evaluar rangeStep() para efectos de plot de fft
 plot()
+	colocar nombres a las gráficas
+	plotear múltiples líneas
+	
 subplot()
 
+transformada coseno
+transformada inversa coseno
 
-
-revisar ones, zeros...entre otras
+transformada coseno 2D
+transformada inversa coseno	2D
