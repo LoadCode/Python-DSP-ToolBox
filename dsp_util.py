@@ -341,14 +341,32 @@ def printArray(mat):
 
 
 def matInt2Float(matrix):
-	#Recibe un array de dos dimensiones que contiene valores de tipo entero (no tuplas)
-	m,n = size(matrix)
-	mat = zeros(m,n)
-	for i in range(m):
-		for j in range(n):
-			mat[i][j] = float(matrix[i][j])
+	#Este método recibe listas simples, tuplas, matrices y vectores
+	#Lanza la excepción DataTypeError si el parámetro ingresado no es alguno de los anteriores
+	#Si el parámetro ingresado es una tupla retorna una lista
+	
+	#Se verifica que el parámetro recibido sea de un tipo válido para el método
+	tipo = typeArray(matrix)
+	if tipo == 'Not An Array':
+		print 'Este tipo de parametro no es valido'
+		raise DataTypeError
 
-	return mat
+	#Si se recibio una lista o una tupla
+	if tipo.count('Simple'):
+		m = len(matrix)
+		vec = zeros(m)
+		for i in range(m):
+			vec[i] = float(matrix[i])
+		return vec
+
+	else:
+		m,n = size(matrix)
+		mat = zeros(m,n)
+		for i in range(m):
+			for j in range(n):
+				mat[i][j] = float(matrix[i][j])
+
+		return mat
 
 
 def maxArray(mat,opt=None):
@@ -413,47 +431,125 @@ def minArray(mat):
 
 
 def MatrixOperations(mat1,mat2,op = '+'):
+	#Esta función realiza las operaciones suma, resta y multiplicación entre arreglos tipo vectoriales y matriciales
+	#Lanza excepción DimensionError si los operandos no cumplen con las dimensiones adecuadas para la operación.
+	#Lanza excepción DataTypeError si los operandos pasádos como argumentos no son arrays válidos
 
-	m1,n1 = size(mat1)
-	m2,n2 = size(mat2)
+	tipo1 = typeArray(mat1)
+	tipo2 = typeArray(mat2)
+	if tipo1 == 'Not An Array' or tipo2 == 'Not An Array':
+		raise DataTypeError
 
-	if n1 == None or n2 == None:  #Seguridad para el metodo
-		raise VectorDimensionError
-	
-	res = zeros(m1,n1)
 
-	if op == '+':
-		for i in range(m1):
-			for j in range(n1):
-				res[i][j] = mat1[i][j] + mat2[i][j]
-	
-	elif op == '-':
-		for i in range(m1):
-			for j in range(n1):
-				res[i][j] = mat1[i][j] - mat2[i][j]
+	#verificar si es tupla o lista simples
+	if tipo1.count('Simple') > 0 and tipo2.count('Simple') > 0:
+		#Si los operandos no son de tipo vectorial o matricial solo se podrá hacer sumas, restas, multiplicacion o divisiones elemento a elemento
+		m1 = len(mat1)
+		m2 = len(mat2)
+		if op != '+' and op != '-' and op != '.*':
+			print 'No se puede realizar dicha accion sobre los operandos'
+			raise OptionInvalidError
+		elif m1 != m2:
+			raise DimensionError
+		else:
+			vecRes = zeros(m)
+			if op == '+':
+				for i in range(m):
+					vecRes[i] = mat1[i] + mat2[i]
+			elif op == '-':
+				for i in range(m):
+					vecRes[i] = mat1[i] - mat2[i]
+			elif op == '.*': #Multiplicación elemento a elemento
+				for i in range(m):
+					vecRes[i] = mat1[i] * mat2[i]
+			elif op == './':  #División elemento a elemento
+				for i in range(m):
+					vecRes[i] = mat1[i] / mat2[i]
+			else:
+				raise OptionInvalidError
+			return vecRes
 
-	elif op == '*':
-		#EJEMPLO: 
-		#b = [[3,2,4],[4,3,2],[7,6,4]]
-		#d = [[3],[4],[6]]
-		#res = MatrixOperations(b,d,'*')
-		#printMatrix(res)
-		if n1 == m2: #las matrices son de demensiones adecuadas
-			#En este método python si puede operar con vectores columna como matrices no con vectores fila
+	elif (tipo1.count("Matrix") or tipo1.count("Vector")) and (tipo1.count("Matrix") or tipo1.count("Vector")):
+		#Verificamos que los arreglos sean ambos de tipo matricial o vectorial
+		
+		m1,n1 = size(mat1)
+		m2,n2 = size(mat2)
+
+		#A la hora de realizar la operación, deben verificarse que los arreglos tengas las dimensiones adecuadas.
+
+		if op == '+':
+
+			if (m1 != m2) or (n1 != n2):
+				#Si las dimensiones no son adecuadas se lanza la excepción DimensionError
+				raise DimensionError
+			else:
+				res = zeros(m1,n1)   #Vector para almacenar el resultado
+				for i in range(m1):
+					for j in range(n1):
+						res[i][j] = mat1[i][j] + mat2[i][j]
+		
+		elif op == '-':
+
+			if (m1 != m2) or (n1 != n2):
+				#Si las dimensiones no son adecuadas se lanza la excepción DimensionError
+				raise DimensionError
+			else:
+				res = zeros(m1,n1)   #Vector para almacenar el resultado
+				for i in range(m1):
+					for j in range(n1):
+						res[i][j] = mat1[i][j] - mat2[i][j]
+
+		elif op == '.*':
+
+			if (m1 != m2) or (n1 != n2):
+				#Si las dimensiones no son adecuadas se lanza la excepción DimensionError
+				raise DimensionError
+			else:
+				res = zeros(m1,n1)   #Vector para almacenar el resultado
+				for i in range(m1):
+					for j in range(n1):
+						res[i][j] = mat1[i][j] * mat2[i][j]
+
+		elif op == './':
+
+			if (m1 != m2) or (n1 != n2):
+				#Si las dimensiones no son adecuadas se lanza la excepción DimensionError
+				raise DimensionError
+			else:
+				res = zeros(m1,n1)   #Vector para almacenar el resultado
+				for i in range(m1):
+					for j in range(n1):
+						res[i][j] = mat1[i][j] / mat2[i][j]
+
+		elif op == '*':
+			#EJEMPLO: 
+			#b = [[3,2,4],[4,3,2],[7,6,4]]
+			#d = [[3],[4],[6]]
+			#res = MatrixOperations(b,d,'*')
+			#printMatrix(res)
+
+
+			#Se verifica primero que los arrays sean de las dimensiones adecuadas para una multiplicación matricial de lo contrario se lanza DimensionError
+			if n1 != m2:
+				raise DimensionError
+			
 			res = zeros(m1,n2)
-			for i in range(m1):
-				for j in range(n2):
-					acu = 0.0
-					for r in range(n1):
-						acu += mat1[i][r]*mat2[r][j]
-					if type(res) == float or type(res) == int:
-						return acu
+				for i in range(m1):
+					for j in range(n2):
+						acu = 0.0
+						for r in range(n1):
+							acu += mat1[i][r]*mat2[r][j]
+						if type(res) == float: #Si la multiplicación retorna solo un número (como el producto de un vector fila por uno columna)
+							return acu
 
 					res[i][j] = acu
 	else:
 		print 'Error operación no implementada'
+		raise OptionInvalidError
 
 	return res
+
+
 
 
 def mapMatrix(mat,mini = 0.0,maxi = 255.0):
