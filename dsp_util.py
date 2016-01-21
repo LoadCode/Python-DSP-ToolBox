@@ -596,29 +596,60 @@ def rangeStep(x_1,step,x_2):
 
 
 
+
 def list2VecFil(x):
-	#Esta función recibe una lista de una dimensión y la convierte en
-	#un vector fila válido para aplicar las funciones del módulo DSP_Utils
-	return [[x[i] for i in range(len(x))]]
+	#Esta función recibe como parámetro un arreglo de Python de tipo Lista o Tupla (unidimensional) y la convierte
+	#en un array tipo Vector Fila con el cual se pueden aplicar operaciones matriciales de este mismo módulo
+
+	#Verificamos que el argumento de la función sea de tipo lista o tupla
+	tipo = typeArray(x)
+	if (tipo.count('List') == 0) and (tipo.count('Tuple') == 0):
+		print 'El tipo de dato introducido no es Lista o Tupla'
+		raise DataTypeError
+	else:
+		return [[x[i] for i in range(len(x))]]
+
+
 
 
 def list2VecCol(x):
-	#Esta función recibe una lista unidimensional y retorna un
-	#vector columna válido para aplicar las funciones del módulo DSP_Utils
-	return [[x[i]] for i in range(len(x))]
+	#Esta función recibe como parámetro un arreglo de Python de tipo Lista o Tupla (unidimensional) y la convierte
+	#en un array tipo Vector Columna con el cual se pueden aplicar operaciones matriciales de este mismo módulo
+
+	#Verificamos que el argumento de la función sea de tipo lista o tupla
+	tipo = typeArray(x)
+	if (tipo.count('List') == 0) and (tipo.count('Tuple') == 0):
+		print 'El tipo de dato introducido no es Lista o Tupla'
+		raise DataTypeError
+	else:
+		return [[x[i]] for i in range(len(x))]
+
+
+
 
 def Col2Fil(x):
-	#Esta función convierte un vector columna en un vector fila
+	#Esta función recibe como parámetro un vector columna y retorna un vector fila
+	#Lanza la excepción DataTypeError si el parámetro no es válido
+
+	#Verificamos que efectivamente el parámetro ingresado sea un vector columna
 	if typeArray(x) == 'Column Vector':
 		m,n = size(x)
 		return [[x[i][0] for i in range(m)]]
 	else:
-		return []
+		print 'Parametro no valido para este metodo'
+		raise DataTypeError
+
+
+
 
 def Fil2Col(x):
-	#Esta función convierte un vector fila en un vector columna
+	#Esta función recibe como parámetro un vector fila y retorna un vector columna
+	#Lanza la excepción DataTypeError si el parámetro no es válido
+
+	#Verificamos que efectivamente el parámetro ingresado sea un vector fila
 	if typeArray(x) == 'Row Vector':
 		m,n = size(x)
 		return [[x[0][i]] for i in range(n)]
 	else:
-		return []
+		print 'Parametro no valido para este metodo'
+		raise DataTypeError
