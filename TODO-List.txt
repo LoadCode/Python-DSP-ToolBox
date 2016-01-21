@@ -15,9 +15,9 @@ revisar los siguientes métodos:
 	matInt2Float:		ok
 	mapMatrix:			no
 	rangeStep:			no
-	list2VecFil:		no
-	list2VecCol:		no
-	Col2Fil:			no
+	list2VecFil:		ok
+	list2VecCol:		ok
+	Col2Fil:			ok
 	Fil2Col:			no
 
 
