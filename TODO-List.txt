@@ -11,8 +11,8 @@ revisar los siguientes métodos:
 	printMatrix:		ok
 	maxMatrix:			ok
 	minMatrix:			ok
-	MatrixOperations:	no
-	matInt2Float:		no
+	MatrixOperations:	ok
+	matInt2Float:		ok
 	mapMatrix:			no
 	rangeStep:			no
 	list2VecFil:		no
@@ -24,7 +24,8 @@ revisar los siguientes métodos:
 
 
 Implementar las siguientes funciones:
-
+transpose() # para transponer matrices y vectores
+sum()
 isSquare()  #pasa saber si una matriz es cuadrada
 arrayAbs()
 fftshift()
@@ -40,3 +41,21 @@ transformada inversa coseno
 
 transformada coseno 2D
 transformada inversa coseno	2D
+
+
+
+
+El primer amor no es la primera persona que me gustó, ni la 
+primera que fue mi pareja. Mi primer amor es la persona por 
+la que siento cosas inimaginables, la primera persona por la que
+he hecho cosas que en realidad pensé que nunca haría y hace que ahora
+sienta que puedo hacerlo todo, esa persona que amo con locura, que me hace 
+sentir las cosas más puras, esa persona que me hace sentir feliz con sólo estar ahí, 
+con una mirada instantánea, con una sonrisa o simplemente con su presencia a pesar de la distancia... 
+Justamente esa persona es mi primer amor, la cual nunca podré olvidar. 
+Y justamente esa persona eres tu mi amor.
+
+Los ojos no son bellos por el color que tienen, sino por lo que
+transmiten al mirar.
+
+Para este frió y esta pereza quiero un café, no cualquier café yo quiero el café de tus ojos Y el de tus pezones
