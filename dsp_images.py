@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from DSP_Utils import *
+from dsp_util import *
 from PIL import Image
 
 # SOURCE: http://www.sitepoint.com/manipulating-images-with-the-python-imaging-library/
