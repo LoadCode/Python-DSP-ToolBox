@@ -1,5 +1,7 @@
 
+
 revisar los siguientes métodos:
+
 	ones:       		ok
 	zeros:      		ok
 	matInit:    		ok
@@ -9,17 +11,45 @@ revisar los siguientes métodos:
 	roundArray: 		ok
 	matScalarOperation: ok
 	printMatrix:		ok
-	maxMatrix:			ok
-	minMatrix:			ok
-	MatrixOperations:	ok
+	maxArray:			ok
+	minArray:			ok
+	arrayOperations:	ok
 	matInt2Float:		ok
-	mapMatrix:			no
-	rangeStep:			no
 	list2VecFil:		ok
 	list2VecCol:		ok
 	Col2Fil:			ok
-	Fil2Col:			no
+	Fil2Col:			ok
+	mapMatrix:			ok
+	rangeStep:			ok
 
+
+
+REVISAR IMAGES.PY
+#se podrá usar pillow? mejor usar matplotlib
+
+	imread				no
+	imshow				no
+	imsave				no
+	rgb2gray			no
+	imageMat			no
+	getPlane			no
+	getPlaneR			no
+	getPlaneB			no
+	getPlaneG			no
+	setPlane			no
+	setPlaneR			no
+	setPlaneG			no
+	setPlaneB			no
+	list1D				no (renombrar)
+	umbralizar			no
+
+
+REVISAR FOURIER.PY
+	
+	fft 				no
+	ifft				no
+	fft2				no
+	ifft2				no
 
 
 
@@ -28,17 +58,19 @@ transpose() # para transponer matrices y vectores
 sum()
 isSquare()  #pasa saber si una matriz es cuadrada
 arrayAbs()
+
+
+
+--es posible una función para evaluar expresiones?
+
 fftshift()
 evaluar rangeStep() para efectos de plot de fft
 plot()
 	colocar nombres a las gráficas
 	plotear múltiples líneas
-	
 subplot()
-
 transformada coseno
 transformada inversa coseno
-
 transformada coseno 2D
 transformada inversa coseno	2D
 
