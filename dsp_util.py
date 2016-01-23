@@ -469,7 +469,7 @@ def arrayOperations(mat1,mat2,op = '+'):
 				raise OptionInvalidError
 			return vecRes
 
-	elif (tipo1.count("Matrix") or tipo1.count("Vector")) and (tipo1.count("Matrix") or tipo1.count("Vector")):
+	elif (tipo1.count("Matrix") or tipo1.count("Vector")) and (tipo2.count("Matrix") or tipo2.count("Vector")):
 		#Verificamos que los arreglos sean ambos de tipo matricial o vectorial
 		
 		m1,n1 = size(mat1)
@@ -542,7 +542,7 @@ def arrayOperations(mat1,mat2,op = '+'):
 					if type(res) == float: #Si la multiplicación retorna solo un número (como el producto de un vector fila por uno columna)
 						return acu
 
-				res[i][j] = acu
+					res[i][j] = acu
 	else:
 		print 'Error operación no implementada'
 		raise OptionInvalidError
@@ -739,5 +739,21 @@ def sumArray(arr,opt = None, col = None):
 
 
 def transpose(mat):
-	#Esta función retorna una arreglo que es el transpuesto 
-	pass
+	#Esta función retorna la transpuesta de un arreglo tipo vector columna, vector fila o matrix.
+	#Si se ingresa un arreglo válido pero es una tupla, se retorna siempre un array lista. 
+	#Lanza una excepción DimensionError si el parámetro ingresado es una lista o tupla simple.
+
+	tipo = typeArray(mat)
+
+	if tipo.count('Simple'):
+		print 'Este metodo no soporta el uso de Listas o Tuplas simples'
+		raise DimensionError
+
+	m,n = size(mat)
+	trans = zeros(n,m)
+
+	for i in range(m):
+		for j in range(n):
+			trans[j][i] = mat[i][j]
+
+	return trans
