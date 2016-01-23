@@ -10,6 +10,20 @@ from PIL import Image
 #		  http://stackoverflow.com/questions/29637191/python-pil-putdata-method-not-saving-the-right-data
 
 
+
+
+
+
+
+
+
+from dsp_util import mapArray, size, zeros, minArray, maxArray
+import matplotlib.pyplot as plt
+import matplotlib.image as mpimg
+import numpy as np
+
+
+
 #EJEMPLO PARA LA MANIPULACIÓN DE IMÁGENES
 #imagen = imread('matlab.png')
 #imagen = rgb2gray(imagen)
