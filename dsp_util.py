@@ -778,3 +778,37 @@ def isSquare(mat):
 	else:  #Si la matriz no es cuadrada  o incluso si son listas o tuplas simples de Python
 		return False
 
+
+
+def arrayAbs(vec):
+	#Esta función recibe un elemento de tipo array, puede ser una lista, tupla, vector o matriz
+	#Retorna dicho array con todos los valores absolutos de sus elementos (si son complejos se retornan magnitudes)
+	#Si los elementos del array son de tipo entero, siempre se retornarán tipos flotantes.
+	#Lanza la excepción DataTypeError si el parámetro ingresado no es válido
+
+	tipo = typeArray(vec)
+
+	if tipo == 'Not An Array':
+		print 'Esta funcion solo acepta un elemento array'
+		raise DataTypeError
+
+	if tipo.count('Simple'):
+		#El parámetro es una lista (o tupla) simple de Python
+		N = len(vec)
+		resul = [0.0 for x in range(N)]
+		
+		for i in range(N):
+			resul[i] = abs(vec[i])
+
+		return resul
+
+	else:  #Puede ser tipo vectorial o matricial
+		m,n = size(vec)
+		resul = zeros(m,n)
+
+		for i in range(m):
+			for j in range(n):
+				resul[i][j] = abs(vec[i][j]) 
+
+		return resul
+
