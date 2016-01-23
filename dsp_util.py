@@ -838,7 +838,7 @@ def getArrayRow(mat,row,sup=False):
 
 	#Los datos han sido validados hasta este punto
 	m,n = size(mat)
-	if row >= m:
+	if row >= m or row < 0:
 		print 'Indice fuera del rango de tamanio de la matriz'
 		raise IndexError
 
@@ -856,3 +856,58 @@ def getArrayRow(mat,row,sup=False):
 		return fila, matc
 
 	return fila
+
+
+
+def getArrayCol(mat,col,sup=False):
+	#Esta función recibe un array tipo matricial y permite copiar una de las columnas
+	#El parámetro 'col' recibe un número entero iniciando desde 0 el indice de la columna que se desea copiar
+	#Un tercer parámetro se puede indicar como True si se desea eliminar la columna del parámetro row de la matriz original
+	#en caso de querer eliminar la columna, se retorna una tupla de dos elementos, primero el vector columna extraido 
+	#y luego la nueva matriz recortada, a la matriz original no le pasa nada.	
+	#Lanza OptionInvalidError si algunos de los parámetros de la función no es una opción válida para el método
+	#Lanza DataTypeError si el array ingresado no es de tipo matricial
+
+
+	#Se validan los parámetros ingresados
+	if not isinstance(col,int):
+		print 'El parametro col debe ser un numero entero'
+		raise OptionInvalidError
+
+	if not isinstance(sup,bool):
+		print 'El parametro sup debe ser un tipo booleano'
+		raise OptionInvalidError
+
+	tipo = typeArray(mat)
+	if tipo != 'Matrix':
+		print 'El array ingresado debe ser de tipo matricial'
+		raise DataTypeError
+
+	#Los datos han sido validados hasta este punto
+	m,n = size(mat)
+	if col >= n or col < 0:
+		print 'Indice fuera del rango de tamanio de la matriz'
+		raise IndexError
+
+	#Se copia la columna indicada
+	vec = zeros(m,1) 
+	for i in range(m):
+		vec[i][0] = mat[i][col]
+
+	if sup:  #Se desea eliminar la columna de la matriz original
+		matc = zeros(m,n-1)  #Matriz copia
+		for i in range(m):
+			u = 0
+			for j in range(n):
+				if j == col:
+					continue
+				matc[i][u] = mat[i][j]
+				u += 1
+		return vec,matc
+
+	return vec
+
+
+
+
+
