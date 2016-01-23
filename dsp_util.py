@@ -340,7 +340,7 @@ def printArray(mat):
 			print mat[i]
 
 
-def matInt2Float(matrix):
+def arrayInt2Float(matrix):
 	#Este método recibe listas simples, tuplas, matrices y vectores
 	#Lanza la excepción DataTypeError si el parámetro ingresado no es alguno de los anteriores
 	#Si el parámetro ingresado es una tupla retorna una lista
@@ -401,7 +401,7 @@ def maxArray(mat,opt=None):
 	return max(maxVec)  #Se extrae el 'mayor de los mayores'
 
 
-def minArray(mat):
+def minArray(mat,opt=None):
 	#Este método retorna el valor mínimo presente en un array (lista, tupla, vector fila, vector columna o arreglo matricial)
 	#Retorna: un escalar el cual es el valor mínimo presente en todo el array
 	#Si la opción opt es igual a 'v' retorna un vector con los menores valores de cada fila en una matriz
@@ -430,7 +430,7 @@ def minArray(mat):
 
 
 
-def MatrixOperations(mat1,mat2,op = '+'):
+def arrayOperations(mat1,mat2,op = '+'):
 	#Esta función realiza las operaciones suma, resta y multiplicación entre arreglos tipo vectoriales y matriciales
 	#Lanza excepción DimensionError si los operandos no cumplen con las dimensiones adecuadas para la operación.
 	#Lanza excepción DataTypeError si los operandos pasádos como argumentos no son arrays válidos
@@ -534,15 +534,15 @@ def MatrixOperations(mat1,mat2,op = '+'):
 				raise DimensionError
 			
 			res = zeros(m1,n2)
-				for i in range(m1):
-					for j in range(n2):
-						acu = 0.0
-						for r in range(n1):
-							acu += mat1[i][r]*mat2[r][j]
-						if type(res) == float: #Si la multiplicación retorna solo un número (como el producto de un vector fila por uno columna)
-							return acu
+			for i in range(m1):
+				for j in range(n2):
+					acu = 0.0
+					for r in range(n1):
+						acu += mat1[i][r]*mat2[r][j]
+					if type(res) == float: #Si la multiplicación retorna solo un número (como el producto de un vector fila por uno columna)
+						return acu
 
-					res[i][j] = acu
+				res[i][j] = acu
 	else:
 		print 'Error operación no implementada'
 		raise OptionInvalidError
@@ -552,14 +552,27 @@ def MatrixOperations(mat1,mat2,op = '+'):
 
 
 
-def mapMatrix(mat,mini = 0.0,maxi = 255.0):
+def mapArray(mat,mini = 0.0,maxi = 255.0):
+	#Esta función recibe un array de cualquier tipo (lista, tupla (retorna lista), vector fila, vector columna, matriz)
+	#y normaliza todos los valores entre un rango cuyo valor mínimo y máximo también son pasados como parámetros
+	#por defecto los valores de mapeado son entre 0.0 y 255.0.
+	#es importante tener en cuenta que los valores en el Array deben ser de tipo float para evitar truncamientos en las operaciones realizadas
+	#Lanza la excepción DataTypeError en caso de que el array ingresádo no sea válido
+
+	mini = float(mini)
+	maxi = float(maxi)
+
+	#verificamos si el array es válido
+	tipo = typeArray(mat)
+	if tipo == 'Not An Array':
+		raise DataTypeError
 
 	m,n = size(mat)
 	newMat = zeros(m,n)
 
 	#Mínimo y máximo valor presente en la matriz
-	mi = minMatrix(mat)
-	ma = maxMatrix(mat)
+	mi = minArray(mat)
+	ma = maxArray(mat)
 	rango = ma-mi
 	newMat = matScalarOperation( matScalarOperation(mat,mi,'-'),rango,'/')
 
@@ -570,9 +583,18 @@ def mapMatrix(mat,mini = 0.0,maxi = 255.0):
 	return newMat
 
 
-def rangeStep(x_1,step,x_2):
+
+def rangeStep(x_1,step,x_2,opt = 'l'):
+	#Esta función simula el comportamiento del operador :: de Matlab, genera un vector o lista con una serie
+	#de valores desde un valor inicial x_1 hasta x_2 en pasos 'step' 
+	#tiene un parámetro opcional 'opt' que indica si se desea una lista 'l', un vector fila 'vf' o un vector columna 'vc'
+	#por defecto se genera una lista.
+	#Lanza excepción OptionInvalidError si se ingresa una opción no soportada por el método
+	#Retorna el valor inicial del rango si el paso es mayor al intervalo entre los dos valores extremos
+
 	N = int(floor((x_2-x_1)/float(step)))+1
-	print 'N =',N
+
+	#if opt == 'l':  #Se genera una lista
 	y = [0.0 for i in range(N)]
 	i = 0
 	if x_1 < x_2:
@@ -589,10 +611,15 @@ def rangeStep(x_1,step,x_2):
 			y[i] = cont
 			cont += step
 			i += 1
-	else:
+	else: #Si el paso es mayor al rango de los valores solo se puede enviar un valor
 		return [x_1]
 
-	return y[:i]
+	if opt == 'vf': #Se convierte la lista a un vector fila y se retorna
+		y = list2VecFil(y)
+	elif opt == 'vc': #Se convierte la lista a un vector columna y se retorna
+		y = list2VecCol(y)
+
+	return y
 
 
 
@@ -653,3 +680,8 @@ def Fil2Col(x):
 	else:
 		print 'Parametro no valido para este metodo'
 		raise DataTypeError
+
+
+def transpose(mat):
+	#Esta función retorna una arreglo que es el transpuesto 
+	pass
