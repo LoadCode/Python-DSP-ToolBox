@@ -681,6 +681,8 @@ def Fil2Col(x):
 		print 'Parametro no valido para este metodo'
 		raise DataTypeError
 
+
+
 def sumArray(arr,opt = None, col = None):
 	#Esta función retorna un escalar con la suma de todos los elementos del array
 	#Si el array esde tipo matricial, con la opción 'v' se retorna un vector fila con la suma de los elementos
@@ -757,3 +759,22 @@ def transpose(mat):
 			trans[j][i] = mat[i][j]
 
 	return trans
+
+
+def isSquare(mat):
+	#Esta función recibe una matriz y retorna True si la matriz es cuadrada o False en caso contrario
+	#Lanza excepción DataTypeError si el array ingresado no es válido
+
+	tipo = typeArray(mat)
+
+	if tipo == 'Not An Array':
+		print 'El argumento ingresado no corresponde a un array valido'
+		raise DataTypeError
+
+	m,n = size(mat)
+
+	if m == n:     #La matriz es cuadrada
+		return True
+	else:  #Si la matriz no es cuadrada  o incluso si son listas o tuplas simples de Python
+		return False
+
