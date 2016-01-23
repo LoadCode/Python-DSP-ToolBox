@@ -812,3 +812,47 @@ def arrayAbs(vec):
 
 		return resul
 
+
+def getArrayRow(mat,row,sup=False):
+	#Esta función recibe un array tipo matricial y permite copiar una de las filas
+	#El parámetro 'row' recibe un número entero iniciando desde 0 el indice de la fila que se desea copiar
+	#Un tercer parámetro se puede indicar como True si se desea eliminar la fila del parámetro row de la matriz original
+	#en caso de querer eliminar la fila, se retorna una tupla de dos elementos, primero el vector fila extraido 
+	#y luego la nueva matriz recortada, a la matriz original no le pasa nada	
+	#Lanza OptionInvalidError si algunos de los parámetros de la función no es una opción válida para el método
+	#Lanza DataTypeError si el array ingresado no es de tipo matricial
+
+	#Se validan los parámetros ingresados
+	if not isinstance(row,int):
+		print 'El parametro row debe ser un numero entero'
+		raise OptionInvalidError
+
+	if not isinstance(sup,bool):
+		print 'El parametro sup debe ser un tipo booleano'
+		raise OptionInvalidError
+
+	tipo = typeArray(mat)
+	if tipo != 'Matrix':
+		print 'El array ingresado debe ser de tipo matricial'
+		raise DataTypeError
+
+	#Los datos han sido validados hasta este punto
+	m,n = size(mat)
+	if row >= m:
+		print 'Indice fuera del rango de tamanio de la matriz'
+		raise IndexError
+
+	fila = [mat[row]]  #Vector fila
+
+	if sup:
+		matc = zeros(m-1,n) #Copia para la matriz original
+		u = 0
+		i = 0
+		while u < m:
+			if u != row:
+				matc[i] = mat[u] 
+				i += 1
+			u += 1
+		return fila, matc
+
+	return fila
