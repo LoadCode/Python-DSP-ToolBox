@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from Errores import *   #se importan todas las excepciones personalizadas del toolbox
-from math import floor
+from math import floor, fsum
 
 def ones(m,n=None):
 	#Esta función retorna una arreglo bidimensional que puede ser vector fila, columna o matriz de MxN
@@ -680,6 +680,62 @@ def Fil2Col(x):
 	else:
 		print 'Parametro no valido para este metodo'
 		raise DataTypeError
+
+def sumArray(arr,opt = None, col = None):
+	#Esta función retorna un escalar con la suma de todos los elementos del array
+	#Si el array esde tipo matricial, con la opción 'v' se retorna un vector fila con la suma de los elementos
+	#de cada fila en la matriz, con la opción col='col' se retorna el mismo vector con la suma de los elementos
+	#de cada columna en la matriz de lo contrario si el array no es matricial entonces solo se retorna el escalar.
+
+	#Lanza la excepción OptionInvalidError sino se ingresa una opción válida.
+	#Lanza la excepción DataTypeError si el array ingresado no es válido para este método.
+	#Lanza la excepción DimensionError si la operación no es soportada.
+
+	tipo = typeArray(arr)
+	if tipo == 'Not An Array':
+		print 'Debe ingresarse un elemento de tipo Array'
+		raise DataTypeError
+
+	if opt != None and opt != 'v':
+		print 'Valor del parametro opt solo puede tomar el valor \'v\' o None'
+		raise OptionInvalidError
+
+	if col != None and col != 'col':
+		print 'El parametro col solo puede tomar el valor \'col\' o None'
+		raise OptionInvalidError
+
+	#En este punto los tipos de dato ingresádos son válidos
+
+	#Se verifica si es una lista o tupla simple de Python
+	if tipo == 'Simple Python List' or tipo == 'Simple Python Tuple':
+		return fsum(arr)
+
+	m,n = size(arr)
+	if opt == None:  #Realiza la suma de todos los elementos
+		sumador = 0.0
+		
+		for i in range(m):
+			sumador += fsum(arr[i])
+		return sumador
+
+	if opt == 'v':  #Retorna un vector fila con la suma de todos los elementos
+
+		if col == 'col': #Retorna un vector cuyos elementos son la suma de cada columna
+			resul = zeros(1,n)
+			for j in range(n):
+				for i in range(m):
+					resul[0][j] += arr[i][j]
+			
+			return resul
+		else:
+			resul = zeros(1,m)
+			for i in range(m):
+				resul[0][i] = fsum(arr[i])
+			
+			return resul
+
+
+
 
 
 def transpose(mat):
