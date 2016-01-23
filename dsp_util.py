@@ -813,6 +813,7 @@ def arrayAbs(vec):
 		return resul
 
 
+
 def getArrayRow(mat,row,sup=False):
 	#Esta función recibe un array tipo matricial y permite copiar una de las filas
 	#El parámetro 'row' recibe un número entero iniciando desde 0 el indice de la fila que se desea copiar
@@ -906,6 +907,60 @@ def getArrayCol(mat,col,sup=False):
 		return vec,matc
 
 	return vec
+
+
+
+def setArrayRow(mat,vec,pos=None):
+	#Esta función recibe como parámetros una matriz y un vector fila
+	#Retorna una matriz que es el resultado de concatenar el vector fila en la posición indicada donde agregar la fila
+	#La posición por defecto en la cual se ubica la fila a concatenar es después de la última fila
+	#Lanza DataTypeError si la matriz o el vector no son adecuados
+	#Lanza OptionInvalidError si la posición en la que se desea concatenar se sale fuera de los límites válidos de la matriz
+	#Lanza DimensionError si las dimensiones no son adecuadas para la concatenación de los arrays
+
+	#Se verifica la validez de los datos ingresados
+	tipoM = typeArray(mat)
+	tipoV = typeArray(vec)
+
+	if tipoM != 'Matrix' or tipoV != 'Row Vector':
+		raise DataTypeError
+
+	mm,nm = size(mat)
+	mv,nv = size(vec)
+
+	if nm != nv:
+		print 'El numero de columnas debe ser el mismo para mantener las dimensiones consistentes'
+		raise DimensionError
+
+	if pos == None:
+		pos = mm  #Concatenar al final por defecto
+
+	if not isinstance(pos,int):
+		print 'El parametro posicion no acepta tipos de dato diferentes al entero'
+		raise OptionInvalidError
+
+	if pos < 0 or pos > mm:
+		print 'La posicion en la que se quiere concatenar se sale del rango permitido'
+		raise OptionInvalidError
+
+
+	#Hasta aquí se han validado los datos
+	matc = zeros(mm+1,nm) #Agrega una fila más en comparación con la matriz original
+
+	#Realizamos el copiado y concatenación de los datos
+	u = 0
+	for i in range(mm+1):
+		if i == pos:
+			matc[u] = vec[0] #copiamos el vector
+		elif i < pos:
+			matc[u] = mat[i]
+		else:
+			matc[u] = mat[i-1]
+		u += 1
+
+	return matc
+
+
 
 
 
