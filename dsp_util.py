@@ -324,7 +324,13 @@ def printArray(mat):
 	#Imprime en pantalla el array que es ingresado como parámetro
 	#puede recibir listas, tuplas y arreglos de tipo maticial
 	#Lanza la excepción DataTypeError  si el parámetro no es de tipo Array o presenta alguna inconsistencia.
-
+	#
+	#EJEMPLO:
+	#from dsp_util import zeros, ones, setArrayCol, printArray
+	#mat = zeros(3,4)
+	#vec = ones(3,1)
+	#printArray(setArrayCol(mat,vec,5))
+	
 	tipo = typeArray(mat)
 
 	if tipo == 'Not An Array':
@@ -912,8 +918,8 @@ def getArrayCol(mat,col,sup=False):
 
 def setArrayRow(mat,vec,pos=None):
 	#Esta función recibe como parámetros una matriz y un vector fila
-	#Retorna una matriz que es el resultado de concatenar el vector fila en la posición indicada donde agregar la fila
-	#La posición por defecto en la cual se ubica la fila a concatenar es después de la última fila
+	#Retorna una matriz que es el resultado de concatenar el vector fila en la posición indicada donde queremos agregar dicha fila
+	#La posición por defecto en la cual se ubica la fila a concatenar es simpre al final de la matriz
 	#Lanza DataTypeError si la matriz o el vector no son adecuados
 	#Lanza OptionInvalidError si la posición en la que se desea concatenar se sale fuera de los límites válidos de la matriz
 	#Lanza DimensionError si las dimensiones no son adecuadas para la concatenación de los arrays
@@ -962,7 +968,57 @@ def setArrayRow(mat,vec,pos=None):
 
 
 
+def setArrayCol(mat,vec,pos=None):
+	#Esta función recibe como parámetros una matriz y un vector columna
+	#Retorna una matriz que es el resultado de concatenar el vector columna en la posición indicada donde queremos agregar dicha columna
+	#La posición por defecto en la cual se ubica la columna a concatenar es siempre al final (costado derecho) de la matriz
+	#Lanza DataTypeError si la matriz o el vector no son adecuados
+	#Lanza OptionInvalidError si la posición en la que se desea concatenar se sale fuera de los límites válidos de la matriz
+	#Lanza DimensionError si las dimensiones no son adecuadas para la concatenación de los arrays
 
+	#Se verifica la validez de los datos ingresados
+	tipoM = typeArray(mat)
+	tipoV = typeArray(vec)
+
+	if tipoM != 'Matrix' or tipoV != 'Column Vector':
+		raise DataTypeError
+
+	mm,nm = size(mat)
+	mv,nv = size(vec)
+
+	if mm != mv:
+		print 'El numero de filas debe ser el mismo para mantener las dimensiones consistentes'
+		raise DimensionError
+
+	if pos == None:
+		pos = nm  #Concatenar al costado derecho por defecto
+
+	if not isinstance(pos,int):
+		print 'El parametro posicion no acepta tipos de dato diferentes al entero'
+		raise OptionInvalidError
+
+	if pos < 0 or pos > nm:
+		print 'La posicion en la que se quiere concatenar se sale del rango permitido'
+		raise OptionInvalidError
+
+
+	#Hasta aquí se han validado los datos
+	matc = zeros(mm,nm+1) #Agrega una columna más en comparación con la matriz original
+
+	#Realizamos el copiado y concatenación de los datos
+	u = 0
+	for i in range(mm):
+		u = 0
+		for j in range(nm+1):
+			if j == pos:
+				matc[i][u] = vec[i][0] #copiamos el vector
+			elif j < pos:
+				matc[i][u] = mat[i][j]
+			else:
+				matc[i][u] = mat[i][j-1]
+			u += 1
+
+	return matc
 
 
 

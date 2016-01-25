@@ -2,68 +2,79 @@
 
 revisar los siguientes métodos:
 
-	ones:       		ok
-	zeros:      		ok
-	matInit:    		ok
-	linspace:   		ok
-	size:       		ok
-	typeArray:  		ok
-	roundArray: 		ok
-	matScalarOperation: ok
-	printMatrix:		ok
-	maxArray:			ok
-	minArray:			ok
-	arrayOperations:	ok
-	matInt2Float:		ok
-	list2VecFil:		ok
-	list2VecCol:		ok
-	Col2Fil:			ok
-	Fil2Col:			ok
-	mapMatrix:			ok
-	rangeStep:			ok
+1	ones:       		ok
+2	zeros:      		ok
+3	matInit:    		ok
+4	linspace:   		ok
+5	size:       		ok
+6	typeArray:  		ok
+7	roundArray: 		ok
+8	matScalarOperation: ok
+9	printMatrix:		ok
+10	maxArray:			ok
+11	minArray:			ok
+12	arrayOperations:	ok
+13	matInt2Float:		ok
+14	list2VecFil:		ok
+15	list2VecCol:		ok
+16	Col2Fil:			ok
+17	Fil2Col:			ok
+18	mapMatrix:			ok
+19	rangeStep:			ok
+20	transpose() 		ok
+21	sum()				ok
+22	isSquare()  		ok
+23	arrayAbs()			ok
+24	getArrayRow			ok
+25	getArrayCol			ok
+26	setArrayRow			ok
+27  setArrayCol			ok
 
 
 
 REVISAR IMAGES.PY
 #se podrá usar pillow? mejor usar matplotlib
 
-	imread				no
-	imshow				no
-	imsave				no
-	rgb2gray			no
-	imageMat			no
-	getPlane			no
-	getPlaneR			no
-	getPlaneB			no
-	getPlaneG			no
-	setPlane			no
-	setPlaneR			no
-	setPlaneG			no
-	setPlaneB			no
-	list1D				no (renombrar)
-	umbralizar			no
+1	imread				no
+2	imshow				no
+3	imsave				no
+4	rgb2gray			no
+5	imageMat			no
+6	getPlane			no
+7	getPlaneR			no
+8	getPlaneB			no
+9	getPlaneG			no
+10	setPlane			no
+11	setPlaneR			no
+12	setPlaneG			no
+13	setPlaneB			no
+14	list1D				no (renombrar)
+15	umbralizar			no
 
 
 REVISAR FOURIER.PY
 	
-	fft 				no
-	ifft				no
-	fft2				no
-	ifft2				no
-
+1	fft 				no
+2	ifft				no
+3	fft2				no
+4	ifft2				no
+5	fftshift			no
 
 
 Implementar las siguientes funciones:
-transpose() # para transponer matrices y vectores
-sum()
-isSquare()  #pasa saber si una matriz es cuadrada
-arrayAbs()
+
+inv 				no (inversa de una matriz)
+arrEvalExp			no (funciones lambda)
+rgb2cmyk			no
+rgb2hsv				no
+cmyk2rgb			no
+hsv2rgb				no
+cmyk2hsv			no
+hsv2cmyk			no
 
 
+--es posible una función para evaluar expresiones? (sí, expresiones Lambda)
 
---es posible una función para evaluar expresiones?
-
-fftshift()
 evaluar rangeStep() para efectos de plot de fft
 plot()
 	colocar nombres a las gráficas
