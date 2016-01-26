@@ -37,8 +37,9 @@ REVISAR IMAGES.PY
 
 1	imread				ok
 2	imshow				ok
-3	imsave				no
-4	rgb2gray			no
+3	rgb2gray			no
+4	imsave				no
+	imconv				no
 5	imageMat			no
 6	getPlane			ok
 7	getPlaneR			no
