@@ -35,12 +35,12 @@ revisar los siguientes métodos:
 REVISAR IMAGES.PY
 #se podrá usar pillow? mejor usar matplotlib
 
-1	imread				no
-2	imshow				no
+1	imread				ok
+2	imshow				ok
 3	imsave				no
 4	rgb2gray			no
 5	imageMat			no
-6	getPlane			no
+6	getPlane			ok
 7	getPlaneR			no
 8	getPlaneB			no
 9	getPlaneG			no
@@ -64,6 +64,7 @@ REVISAR FOURIER.PY
 Implementar las siguientes funciones:
 
 inv 				no (inversa de una matriz)
+det					no (determinante de una matriz)
 arrEvalExp			no (funciones lambda)
 rgb2cmyk			no
 rgb2hsv				no
