@@ -83,6 +83,27 @@ def imsave(imagenMat,filename = 'Imagen sin nombre.png'):
 	imagen.putdata(dataL)
 	imagen.save(filename)
 
+def rgb2gray(im):
+	#Esta función recibe una un array en formato de imagen RGB y retorna una matriz de las mismas dimensiones
+	#con sus valores en escala de grises utilizando la siguiente ecuación estandar encontrada en: http://www.mathworks.com/help/matlab/ref/rgb2gray.html
+	#Lanza la excepción DataTypeError si la imagen ingresada no tiene dimensiones matriciales consistentes (debe ser una matriz)
+	#rgb2gray convierte los valores RGB a escala de grises obteniendo la suma ponderada de las componentes R, G, y B:
+	#				0.2989 * R + 0.5870 * G + 0.1140 * B 
+
+	tipo = typeArray(im)
+	if tipo != 'Matrix':
+		raise DataTypeError
+
+	m,n = size(im)
+	gray = zeros(m,n)
+
+	#conversión
+	for i in range(m):
+		for j in range(n):			  #R   					  #G 					#B
+			gray[i][j] = 0.2989 * im[i][j][0] + 0.5870 * im[i][j][1] + 0.1140 * im[i][j][2] 
+
+	return gray
+
 
 
 def ImageMat(Lista1D,m,n): #Image reconstruction (volver a forma matricial)
@@ -173,37 +194,73 @@ def preImshow(mat):
 	#Esta función es necesaria previo a poder mostrar la imagen ingresada ya que sus valores deben estar escalados
 	#a datos de 8 bits sin signo entre 0 y 255.
 	#En caso de que los datos tengan valores por encima de 255 se escalan en el rango [0 255]
-	maximo = imageMaxVal(mat)
 
-	if (isinstance(mat[0][0][0],float) and maximo <= 1.0) or maximo > 255.0:
-		
-		r = getPlane(mat,'r',matrix=True)
-		g = getPlane(mat,'g',matrix=True)
-		b = getPlane(mat,'b',matrix=True)
-		r = mapArray(r,0,255)
-		g = mapArray(g,0,255)
-		b = mapArray(b,0,255)
+	try:
+	
+		temp = len(mat[0][0])  #Si esto da error es porque está en escala de grises
+	
+	except TypeError:
+		#La imagen está en escala de grises
+		maximo = maxArray(mat)
 
-		img = setPlane(mat,r,'r')
-		img = setPlane(img,g,'g')
-		img = setPlane(img,b,'b')
-		return np.uint8(img)
-	print mat[0][0]
+		if (isinstance(mat[0][0],float) and maximo <= 1.0) or maximo > 255.0:
+			gris = mapArray(mat,0,255)
+			return np.uint8(gris)
+		else:
+			return np.uint8(mat)
+
+	else:
+		maximo = imageMaxVal(mat)
+
+		if (isinstance(mat[0][0][0],float) and maximo <= 1.0) or maximo > 255.0:
+			
+			r = getPlane(mat,'r',matrix=True)
+			g = getPlane(mat,'g',matrix=True)
+			b = getPlane(mat,'b',matrix=True)
+			r = mapArray(r,0,255)
+			g = mapArray(g,0,255)
+			b = mapArray(b,0,255)
+
+			img = setPlane(mat,r,'r')
+			img = setPlane(img,g,'g')
+			img = setPlane(img,b,'b')
+			return np.uint8(img)
+
 	return np.uint8(mat)
+
+def typeImage(img):
+	#Esta función indica si una imagen está en formato RGB o escala de grises
+	#Lanza excepción DataTypeError si la imagen tiene dimensiones inconsistentes
+	#Retorna 'GrayScale' si la imagen está en escala de grises
+	#		 'RGB'       si la imagen es de tipo RGB
+
+	try:
+		temp = len(img[0][0])
+	except TypeError:
+		return 'GrayScale'
+	else:
+		return 'RGB'
+
+
 
 def imshow(img, display=None):
 	img = preImshow(img)
 	if display == 'multiple':
-		plt.imshow(img)
+		if typeImage(img) == 'GrayScale':
+			plt.imshow(img,cmap = plt.get_cmap('gray'))
+		else:
+			plt.imshow(img)
+		plt.gca().axes.get_xaxis().set_visible(False)
+		plt.gca().axes.get_yaxis().set_visible(False)
 	else:
-		plt.imshow(img)
+		if typeImage(img) == 'GrayScale':
+			plt.imshow(img,cmap = plt.get_cmap('gray'))
+		else:
+			plt.imshow(img)
+		
 		plt.gca().axes.get_xaxis().set_visible(False)
 		plt.gca().axes.get_yaxis().set_visible(False)
 		plt.show()
-	#if typeImage == 'GrayScale':
-	#	imgplot = plt.imshow(img,cmap = plt.get_cmap('gray'))
-	#else:
-	#	imgplot = plt.imshow(img)
 
 
 def getPlaneR(imagen,matOption = None):

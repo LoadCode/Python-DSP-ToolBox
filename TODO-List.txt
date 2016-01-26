@@ -37,20 +37,20 @@ REVISAR IMAGES.PY
 
 1	imread				ok
 2	imshow				ok
-3	rgb2gray			no
+3	rgb2gray			ok
 4	imsave				no
-	imconv				no
-5	imageMat			no
-6	getPlane			ok
-7	getPlaneR			no
-8	getPlaneB			no
-9	getPlaneG			no
-10	setPlane			no
-11	setPlaneR			no
-12	setPlaneG			no
-13	setPlaneB			no
-14	list1D				no (renombrar)
-15	umbralizar			no
+5	imconv				no
+6	imageMat			no
+7	getPlane			ok
+8	getPlaneR			no
+9	getPlaneB			no
+10	getPlaneG			no
+11	setPlane			no
+12	setPlaneR			no
+13	setPlaneG			no
+14	setPlaneB			no
+15	list1D				no (renombrar)
+16	umbralizar			no
 
 
 REVISAR FOURIER.PY
