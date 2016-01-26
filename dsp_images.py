@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from dsp_util import *
-from PIL import Image
+#from dsp_util import *
+#from PIL import Image
 
 # SOURCE: http://www.sitepoint.com/manipulating-images-with-the-python-imaging-library/
 #		  http://stackoverflow.com/questions/1109422/getting-list-of-pixel-values-from-pil
@@ -9,15 +9,8 @@ from PIL import Image
 #		  http://sourcedexter.com/2013/08/27/extracting-pixel-values-of-an-image-in-python/
 #		  http://stackoverflow.com/questions/29637191/python-pil-putdata-method-not-saving-the-right-data
 
-
-
-
-
-
-
-
-
-from dsp_util import mapArray, size, zeros, minArray, maxArray
+from dsp_util import mapArray, size, zeros, minArray, maxArray, typeArray
+from Errores import *
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 import numpy as np
@@ -29,30 +22,53 @@ import numpy as np
 #imagen = rgb2gray(imagen)
 #imshow(imagen)
 
-def imread(filename,gray=False):
 
-	im = Image.open(filename)
-	if not gray:
-		pixels = list(im.getdata())
-		width, height = im.size
-		pixels = [pixels[i * width:(i + 1) * width] for i in xrange(height)]
+
+def imageType(im):
+	#Determina si la imagen es RGB, GreyScale
+	tipo = typeArray(im)
+	if tipo != 'Matrix':
+		raise OptionInvalidError
+
+	try:
+		m = len(im[0][0])
+	except Exception, e:
+		return 'GrayScale'
 	else:
-		im = im.convert('L')		
-		pixels = list(im.getdata())
-		width, height = im.size
-		pixels = [pixels[i * width:(i + 1) * width] for i in xrange(height)]
+		return 'RGB'
 
-	return pixels
+def figure():
+	#Crea una ventana nueva para mostrar la imagen
+	plt.figure()
 
 
-def imshow(data,formato="RGB"):
-	m,n = size(data)
-	dataL = List1D(data)
-	if type(dataL[0]) == float or type(dataL[0]) == int: #para imágenes en escala de grices
-		formato = "L"
-	imagen = Image.new(formato,(n,m))
-	imagen.putdata(dataL)
-	imagen.show()
+
+# def imread(filename,opt = None):
+# 	#Se verifica que el nombre de archivo sea uno de los tipos de imagen soportados (.png, .jpg, .bmp, .gif)
+# 	if (not filename.count('.png')) and (not filename.count('.jpg')) and (not filename.count('.bmp')) and (not filename.count('.gif')) or (opt != 'g' and opt != None):
+# 		print 'Extension de archivo no soportado'
+# 		raise OptionInvalidError
+
+# 	img = mpimg.imread(filename)  #Si hay problemas en la lectura del archivo, se lanza la excepción IOError
+# 	imli = img.tolist() #conversión del array Numpy a lista (tipo matricial con le que trabajamos)
+	
+# 	if opt == 'g':
+# 		img = rgb2gray(imli)
+# 		return img
+# 	return imli
+
+def imread(filename = None):
+
+	if filename == None:
+		print 'No se ha ingresado un nombre valido para este metodo'
+		raise IOError
+
+	return mpimg.imread(filename).tolist()
+
+
+
+def figure():
+	plt.figure()
 
 
 def imsave(imagenMat,filename = 'Imagen sin nombre.png'):
@@ -68,59 +84,126 @@ def imsave(imagenMat,filename = 'Imagen sin nombre.png'):
 	imagen.save(filename)
 
 
-def rgb2gray(dataMat,formato = 'RGB'):
-	
-	formatConv = 'L'  #Formato para convertir a escala de grices
-	m,n = size(dataMat)
-	lista1D = List1D(dataMat)
-	
-	imagine = Image.new(formato,(n,m))
-	imagine.putdata(lista1D)
-	imagine = imagine.convert(formatConv) #Nueva imagen en escala de grices
-
-	#Nuevamente se convierte a forma matricial
-	pixelsList = list(imagine.getdata())
-	width, height = imagine.size
-	matriz = ImageMat(pixelsList,height,width)
-	matriz = matInt2Float(matriz)
-
-	return matriz
-
 
 def ImageMat(Lista1D,m,n): #Image reconstruction (volver a forma matricial)
 	imagemat = [Lista1D[i * n:(i + 1) * n] for i in xrange(m)]
 	return imagemat
 
 
-def getPlane(imagen, pln = 'R'):
+def getPlane(imagen, pln = 'R',matrix=False):
 	
 	#Función para obtener un plano de color determinado de una imagen RGB
-	#EJEMPLO:#imagen = imread('brick-house.png')
-	#imagen = rgb2gray(imagen)
-	#green = getPlane(imagen,'g')
-	#imshow(green)
-	m,n = size(imagen)
-	dataPlane = [[ (0,0,0) for h in range(m)] for x in range(n)] #Se inicializa el vector previamente
+	#Si el parámetro matrix=True se retorna el plano en forma matricial (solo dos dimensiones)
+	#Si el parámetro matrix=False se retorna un array de 3 dimensiones RGB solo con los valores del plano deseado
+	#Lanza excepción OptionInvalidError si el parámetro pln difiere de los posibles valores 'r', 'g' o 'b' o si matrix no es un valor Booleano
+	#Lanza excepción DataTypeError si el array ingresado no corresponde a un argumento matricial consistente
 
-	if pln == 'r' or pln == 'R':
-		plane = 0
-		for i in range(n):
-			for j in range(m):
-				dataPlane[i][j] = (imagen[i][j][plane],0,0)
-	elif pln == 'g' or pln == 'G':
-		plane = 1
-		for i in range(n):
-			for j in range(m):
-				dataPlane[i][j] = (0,imagen[i][j][plane],0)
-	elif pln == 'b' or pln == 'B':
-		plane = 2
-		for i in range(n):
-			for j in range(m):
-				dataPlane[i][j] = (0,0,imagen[i][j][plane])
+	#Se validan los argumentos ingresados
+	if typeArray(imagen) != 'Matrix':
+		print 'El parametro ingresado no corresponde a un array matricial'
+		raise DataTypeError
+
+	if pln != 'r' and pln != 'R' and pln != 'g' and pln != 'G' and pln != 'b' and pln != 'B':
+		print 'La opcion ingresada como plano a obtener no es valida'
+		raise OptionInvalidError
+
+	if not isinstance(matrix,bool):
+		print 'El parametro matrix no es de tipo booleano, por lo tanto no es valido para este metodo'
+		raise OptionInvalidError
+
+
+	m,n = size(imagen)
+
+	if matrix:
+		
+		dataPlane = [[ 0.0 for h in range(n)] for x in range(m)] #Se inicializa el vector previamente
+		
+		if pln == 'r' or pln == 'R':
+			plane = 0
+			for i in range(m):
+				for j in range(n):
+					dataPlane[i][j] = imagen[i][j][plane]
+		elif pln == 'g' or pln == 'G':
+			plane = 1
+			for i in range(m):
+				for j in range(n):
+					dataPlane[i][j] = imagen[i][j][plane]
+		elif pln == 'b' or pln == 'B':
+			plane = 2
+			for i in range(m):
+				for j in range(n):
+					dataPlane[i][j] = imagen[i][j][plane]
+		else:
+			return []
+
 	else:
-		return []
+		dataPlane = [[ (0,0,0) for h in range(n)] for x in range(m)] #Se inicializa el vector previamente
+
+		if pln == 'r' or pln == 'R':
+			plane = 0
+			for i in range(m):
+				for j in range(n):
+					dataPlane[i][j] = (imagen[i][j][plane],0,0)
+		elif pln == 'g' or pln == 'G':
+			plane = 1
+			for i in range(m):
+				for j in range(n):
+					dataPlane[i][j] = (0,imagen[i][j][plane],0)
+		elif pln == 'b' or pln == 'B':
+			plane = 2
+			for i in range(m):
+				for j in range(n):
+					dataPlane[i][j] = (0,0,imagen[i][j][plane])
+		else:
+			return []
 
 	return dataPlane
+
+
+def imageMaxVal(im):
+	#Retorna el máximo valor que puede estar en cualquiera de los 3 planos de la imagen RGB
+	r = getPlane(im,'r',matrix=True)
+	g = getPlane(im,'g',matrix=True)
+	b = getPlane(im,'b',matrix=True)
+	return max([maxArray(r), maxArray(g), maxArray(b)])
+
+
+
+def preImshow(mat):
+	#Esta función es necesaria previo a poder mostrar la imagen ingresada ya que sus valores deben estar escalados
+	#a datos de 8 bits sin signo entre 0 y 255.
+	#En caso de que los datos tengan valores por encima de 255 se escalan en el rango [0 255]
+	maximo = imageMaxVal(mat)
+
+	if (isinstance(mat[0][0][0],float) and maximo <= 1.0) or maximo > 255.0:
+		
+		r = getPlane(mat,'r',matrix=True)
+		g = getPlane(mat,'g',matrix=True)
+		b = getPlane(mat,'b',matrix=True)
+		r = mapArray(r,0,255)
+		g = mapArray(g,0,255)
+		b = mapArray(b,0,255)
+
+		img = setPlane(mat,r,'r')
+		img = setPlane(img,g,'g')
+		img = setPlane(img,b,'b')
+		return np.uint8(img)
+	print mat[0][0]
+	return np.uint8(mat)
+
+def imshow(img, display=None):
+	img = preImshow(img)
+	if display == 'multiple':
+		plt.imshow(img)
+	else:
+		plt.imshow(img)
+		plt.gca().axes.get_xaxis().set_visible(False)
+		plt.gca().axes.get_yaxis().set_visible(False)
+		plt.show()
+	#if typeImage == 'GrayScale':
+	#	imgplot = plt.imshow(img,cmap = plt.get_cmap('gray'))
+	#else:
+	#	imgplot = plt.imshow(img)
 
 
 def getPlaneR(imagen,matOption = None):
@@ -195,7 +278,7 @@ def setPlane(imagen,matPlane,plane='R'):
 	#los nuevos valores indicados en la matriz 'matPlane'
 
 	m,n = size(imagen)
-	matRGB = [[(0,0,0) for h in range(m)] for x in range(n)]
+	matRGB = [[(0,0,0) for h in range(n)] for x in range(m)]
 
 	if plane == 'r' or plane == 'R':
 		#Se opera con la componente rojo
