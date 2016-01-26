@@ -9,7 +9,7 @@
 #		  http://sourcedexter.com/2013/08/27/extracting-pixel-values-of-an-image-in-python/
 #		  http://stackoverflow.com/questions/29637191/python-pil-putdata-method-not-saving-the-right-data
 
-from dsp_util import mapArray, size, zeros, minArray, maxArray, typeArray
+from dsp_util import mapArray, size, zeros, minArray, maxArray, typeArray, arrayInt2Float
 from Errores import *
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
@@ -104,7 +104,14 @@ def rgb2gray(im):
 
 	return gray
 
+def im2float(matrix):
+	m,n = size(matrix)
+	mat = zeros(m,n)
+	for i in range(m):
+		for j in range(n):
+			mat[i][j] = [float(matrix[i][j][0]), float(matrix[i][j][1]), float(matrix[i][j][2])]
 
+	return mat
 
 def ImageMat(Lista1D,m,n): #Image reconstruction (volver a forma matricial)
 	imagemat = [Lista1D[i * n:(i + 1) * n] for i in xrange(m)]
